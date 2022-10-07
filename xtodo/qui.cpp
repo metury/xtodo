@@ -179,7 +179,13 @@ void MainWindow::sort(){
 }
 
 void MainWindow::save(){
-    reader_->saveFile((*tasks_), (*ofile_));
+	try{
+		reader_->saveFile((*tasks_), (*ofile_));
+	}
+	catch(Exception& e){
+		QErrorMessage* em = new QErrorMessage();
+        em->showMessage(QString::fromStdString(e.what()));
+	}
 }
 
 void MainWindow::open(){
@@ -194,6 +200,14 @@ void MainWindow::open(){
         QErrorMessage* em = new QErrorMessage();
         em->showMessage(QString::fromStdString(e.what()));
     }
+    refresh();
+}
+
+void MainWindow::openNew(){
+	QString filepath = QFileDialog::getOpenFileName(this,tr("Open Document"),QDir::currentPath(),tr("text files (*.txt)") );
+    std::string file = filepath.toStdString();
+	(*ofile_) = file;
+	reader_->readFile(file, (*tasks_));
     refresh();
 }
 

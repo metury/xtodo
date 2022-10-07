@@ -13,7 +13,7 @@
 #include "reader.hpp"
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; class editwindow; class findwindow;}
+namespace Ui { class MainWindow; class editwindow; class findwindow; class openfilewindow;}
 QT_END_NAMESPACE
 
 /// Main window for showing tasks.
@@ -38,6 +38,9 @@ public:
     
     /// Reload list with matching ones.
     void refreshMatch(const std::string& match);
+    
+    /// Opening new instance of window without given textfile.
+    void openNew();
     
     /// Add new line to list with taks.
     /// @param text What is to be inserted.
@@ -214,4 +217,5 @@ private:
     /// Which mainwindow called this window. For reloading the parent.
     MainWindow* parent_;
 };
+
 #endif

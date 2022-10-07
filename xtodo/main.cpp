@@ -12,14 +12,19 @@
 
 /// Print all possible arguments when calling program.
 void printHelpArgs(){
-	std::cout << "List of arguments that can be used:" << std::endl;
-	std::cout << "-cli .. to use terminal application" << std::endl;
-	std::cout << "-gui .. to use graphical user interface" << std::endl;
-	std::cout << "-s .. to save current settings to config file" << std::endl;
-	std::cout << "-o .. next file (argument without - beforehand) will be as output file" << std::endl;
-	std::cout << "-noconf .. not to read config file" << std::endl;
-	std::cout << "-h [or] --help .. to see this help" << std::endl;
-	std::cout << ".. or else it is considered to be a file (input or output)" << std::endl;
+	std::cout << "xtodo [files] [optional arguments]" << std::endl;
+	std::cout << "  --cli" << std::endl;
+	std::cout << "    To use terminal application" << std::endl;
+	std::cout << "  --gui" << std::endl;
+	std::cout << "    To use graphical user interface" << std::endl;
+	std::cout << "  -s" << std::endl;
+	std::cout << "    To save current settings to config file" << std::endl;
+	std::cout << "  -o" << std::endl;
+	std::cout << "    Next file (argument without - beforehand) will be as output file" << std::endl;
+	std::cout << "  --noconf" << std::endl;
+	std::cout << "    Not to read config file" << std::endl;
+	std::cout << "  -h | --help" << std::endl;
+	std::cout << "    To see this help" << std::endl;
 }
 
 /// Main function of the application.
@@ -34,12 +39,14 @@ int main(int argc, char * * argv){
 		Settings settings;
 		std::vector<std::string> files;
 		std::string ofile;
-		bool run = ar.parseArguments(args, settings, files, ofile);
-		if (!run){
-			printHelpArgs();
-			return 0;
+		if (argc > 1){
+			bool run = ar.parseArguments(args, settings, files, ofile);
+			if (!run){
+				printHelpArgs();
+				return 0;
+			}
+			ar.readConfig(settings, files, ofile);
 		}
-		ar.readConfig(settings, files, ofile);
 		
 		// Load tasks.
 		Tasks tasks;
@@ -55,6 +62,9 @@ int main(int argc, char * * argv){
             MainWindow w (&tasks, &reader, &ofile);
 			w.show();
             w.refresh();
+            if (argc == 1){
+				w.openNew();
+			}
 			return a.exec();
 		}
 		return 0;

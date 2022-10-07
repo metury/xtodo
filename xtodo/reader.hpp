@@ -17,13 +17,13 @@ struct Settings{
 	public:
 		
 		/// Chosen client.
-		CLIENT client = NONE;
+		CLIENT client = GUI;
 		
 		/// Whether to save this settings to config file.
 		bool save = false;
 		
 		/// Whether to read config file or not.
-		bool useConfig = true;
+		bool useConfig = false;
 };
 
 /// Read config file and arguments, also save config if needed.
@@ -52,7 +52,7 @@ class ArgumentReader{
         void saveConfig(const Settings& settings, const std::vector<std::string>& files, const std::string ofile);
 		
 		/// Filepath to config file.
-		const std::string config = ".x++config";
+		const std::string config = ".xconfig";
 };
 
 /// Reading and saving files with todo.txt syntax in it.

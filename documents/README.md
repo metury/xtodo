@@ -4,4 +4,4 @@
 
 ![Abstraktní dokumentace](dokumentace.md)
 
-![Doxygen dokumentace](dox_doc.pdf)
+![Doxygen dokumentace](dox_doc.pdf) (v PDF)

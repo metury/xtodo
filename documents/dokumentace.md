@@ -1,8 +1,8 @@
 ## Úvod
-- Aplikace x++todo je napsaná v jazyce c++ a je rozdělena do několika souborů. Všechny hlavičkové soubory mají svoje vlastní zdrojové soubory se stejným názvem, takže po zbytek budu k většině souborů přistupovat jako k hlavičkovém a zdrojovém souboru zároveň.
-- Také je většina kódu okomentovaná pomocí [doxygen](https://www.doxygen.nl/index.html) dokumentace.
+- Aplikace xtodo je napsaná v jazyce c++ a je rozdělena do několika souborů. Všechny hlavičkové soubory mají svoje vlastní zdrojové soubory se stejným názvem, takže po zbytek budu k většině souborů přistupovat jako k hlavičkovém a zdrojovém souboru zároveň.
+- Také je většina kódu okomentovaná pomocí standardu [doxygen](https://www.doxygen.nl/index.html) dokumentace.
 - Daný projekt je spojován dohromady pomocí [cmake](https://cmake.org/).
-- Tato dokumentace je hlavně abstraktní, aby dodala postup jak je projekt rozdělen a strukturován. Pro popis tříd a funkcí využijte dokumentaci vytvořenou pomocí doxygen.
+- Tato dokumentace je hlavně abstraktní, aby dodala postup jak je projekt rozdělen a strukturován. Pro popis tříd a funkcí využijte dokumentaci vytvořenou pomocí již zmíněného programu doxygen.
 
 ### Použité knihovny
 - V celém projektu jsou použité standardní knihovny c++ a také grafická knihovna [qt](https://www.qt.io/).

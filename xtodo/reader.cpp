@@ -88,10 +88,10 @@ bool ArgumentReader::parseArguments(const std::vector<std::string>& args, Settin
 	bool output = false;
 	for(auto&& arg : args){
 		if(arg[0] == '-'){
-			if(arg == "-cli"){
+			if(arg == "--cli"){
 				settings.client = CLI;
 			}
-			else if (arg == "-gui"){
+			else if (arg == "--gui"){
 				settings.client = GUI;
 			}
 			else if (arg == "-s"){
@@ -100,7 +100,7 @@ bool ArgumentReader::parseArguments(const std::vector<std::string>& args, Settin
 			else if (arg == "-o"){
 				output = true;
 			}
-			else if(arg == "-noconf"){
+			else if(arg == "--noconf"){
 				settings.useConfig = false;
 			}
 			else if(arg == "-h" || arg == "--help"){

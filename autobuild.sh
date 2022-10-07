@@ -6,7 +6,7 @@ install=0
 run=0
 clean=0
 
-config_file=build/.x++config
+config_file=build/.xconfig
 
 for var in $@; do
 	if [ $var == run ]; then
