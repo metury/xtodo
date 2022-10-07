@@ -101,6 +101,9 @@ public slots:
     
     /// Reload file.
     void reload();
+    
+    /// Quit the application.
+    void quit();
 
 private:
 	

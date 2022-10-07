@@ -28,6 +28,7 @@ MainWindow::MainWindow( Tasks* tasks, Reader* reader, std::string* ofile, QWidge
     connect(ui->actionShow_deleted, SIGNAL (triggered()), this, SLOT(checkDel()));
     connect(ui->actionFind, SIGNAL (triggered()), this, SLOT(openFind()));
     connect(ui->actionReload, SIGNAL (triggered()), this, SLOT(reload()));
+    connect(ui->actionQuit, SIGNAL (triggered()), this, SLOT(quit()));
 }
 
 MainWindow::~MainWindow()
@@ -43,7 +44,7 @@ void MainWindow::changeColor(Task* task, size_t index){
 	else if(task->getPriority() == -1){
         return;
     }
-	else{
+	else if(!task->isComplete()){
 		size_t max = 157;
 		int red = 255 - std::min(max, task->getPriority()*21);
 		int green = std::min(max, task->getPriority()*12);
@@ -108,6 +109,17 @@ void MainWindow::redo(){
     ui->tasks->setCurrentRow(index);
 }
 
+void MainWindow::quit(){
+	try{
+		reader_->saveFile((*tasks_), (*ofile_));
+	}
+	catch(Exception e){
+		QErrorMessage* em = new QErrorMessage();
+        em->showMessage(QString::fromStdString(e.what()));
+	}
+	this->close();
+}
+
 size_t MainWindow::selectedItem(QListWidgetItem* item){
 	if (typeid(*item) == typeid(MyItem)){
 		auto temp = dynamic_cast<MyItem&>(*item);
@@ -136,7 +148,6 @@ void MainWindow::edit(){
 void MainWindow::add(){
     editwindow* ew = new editwindow(&tasks_->addEmpty(), this);
     ew->show();
-    // tasks_-> checkEmpty(); // Called after deletion.
 }
 
 void MainWindow::myDelete(){

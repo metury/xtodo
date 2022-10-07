@@ -357,9 +357,6 @@ class Tasks{
 		
 		/// Destroy all tasks and change tasks.
 		void clear();
-		
-		/// Check if the last task is empty, if so delete it.
-		void checkEmpty();
 	private:
 		
 		/// Where all task are stored. As pointers to easily make new pointers to them.

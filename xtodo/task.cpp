@@ -461,18 +461,6 @@ bool Task::match(const std::string& match){
 	return true;
 }
 
-/* Called after deletion.
- void Tasks::checkEmpty(){
-	std::cout << "Empty" << std::endl;
-	if (tasks_.size() > 0 && (*tasks_[tasks_.size() - 1]).isEmpty()){
-		std::cout << "Condition" << std::endl;
-		delete tasks_[tasks_.size() - 1];
-		std::cout  << "Deletion" << std::endl;
-		tasks_.erase(tasks_.end() - 1); 
-		std::cout << "Done" << std::endl;
-	}
-} */
-
 bool Task::isEmpty(){
 	if(text_ == ""){
 		return true;
