@@ -5,6 +5,7 @@ set -ueo pipefail
 install=0
 run=0
 clean=0
+release=0
 
 config_file=build/.xconfig
 
@@ -16,6 +17,10 @@ for var in $@; do
 		install=1
 	fi
 	if [ $var == clean ]; then
+		clean=1
+	fi
+	if [ $var == release ]; then
+		release=1
 		clean=1
 	fi
 done
@@ -46,6 +51,10 @@ if [ -d xtodo/ ]; then
 	if [ $run == 1 ]; then
 		./xtodo
 	fi
+fi
+
+if [ $release == 1 ]; then
+	zip ../release.zip -r .
 fi
 
 # Win-Build
