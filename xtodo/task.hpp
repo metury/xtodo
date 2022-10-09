@@ -8,6 +8,7 @@
 #include <vector>
 #include <algorithm>
 #include <stack>
+#include <ctime>
 #include "exception.hpp"
 
 /// Put together strings from vector (start to end) to one string.
@@ -32,6 +33,9 @@ struct Date{
 		/// @param m Month.
 		/// @param d Day.
 		Date(int y = 0, int m = 0, int d = 0);
+		
+		/// Make this date current.
+		void currentDate();
         
         /// Whether the date is undefined (all values are equal to 0).
         /// @return True if it is undefined.

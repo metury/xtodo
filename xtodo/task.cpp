@@ -75,6 +75,14 @@ Date convertDate(const std::string& writtenDate){
     return date;
 }
 
+void Date::currentDate(){
+	std::time_t t = std::time(0);
+    std::tm* now = std::localtime(&t);
+    year = (now->tm_year + 1900);
+    month = (now->tm_mon + 1);
+    day = now->tm_mday;
+}
+
 bool operator<(const Date& date1, const Date& date2){
 	if(date1.isEmpty() && !date2.isEmpty()){
 		return false;
@@ -125,6 +133,15 @@ Task::Task(bool done, char priority){
 
 void Task::switchCompletion(){
 	completion_ = !completion_;
+	if(completion_){
+		Date date;
+		date.currentDate();
+		this->setCompletionDate(date);
+	}
+	else{
+		Date date;
+		this->setCompletionDate(date);
+	}
 }
 
 void Task::setCompletionDate(std::string date){
@@ -328,6 +345,10 @@ Task& Tasks::at(size_t position){
 
 Task& Tasks::addEmpty(){
 	Task* temp = new Task();
+	temp->text() = "Newly created task";
+	Date date;
+	date.currentDate();
+	temp->setCreationDate(date);
 	tasks_.push_back(temp);
 	return *(tasks_[tasks_.size() - 1]);
 }
