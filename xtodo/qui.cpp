@@ -38,22 +38,18 @@ MainWindow::~MainWindow()
 
 void MainWindow::changeColor(Task* task, size_t index){
     if(task->text() == "" || (!task->getCompletionDate().isEmpty() &&  task->getCreationDate().isEmpty())){
-		ui->tasks->item(index)->setBackground(QColor(QColor::fromRgb(200,0,0)));
-		ui->tasks->item(index)->setForeground(QBrush(QColor::fromRgb(255,255,255)));
+		ui->tasks->item(index)->setBackground(QColor(QColor(0x972323)));
+		ui->tasks->item(index)->setForeground(QBrush(QColor(0xFFFFFF)));
 	}
 	else if(task->isComplete()){
-		ui->tasks->item(index)->setBackground(QColor(QColor::fromRgb(255,255,255)));
-		ui->tasks->item(index)->setForeground(QBrush(QColor::fromRgb(123,123,123)));
+		ui->tasks->item(index)->setBackground(QColor(QColor(0xFFFFFF)));
+		ui->tasks->item(index)->setForeground(QBrush(QColor(0x989898)));
 	}
 	else if(task->getPriority() == -1){
         return;
     }
 	else{
-		size_t max = 157;
-		int red = 255 - std::min(max, task->getPriority()*21);
-		int green = std::min(max, task->getPriority()*12);
-		int blue = std::min(max, task->getPriority()*7);
-		ui->tasks->item(index)->setForeground(QBrush(QColor::fromRgb(red,green,blue)));
+		ui->tasks->item(index)->setForeground(QBrush(colors[task->getPriority()]));
 	}
 }
 

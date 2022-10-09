@@ -124,6 +124,35 @@ private:
     
     /// Whether to show deleted items.
     bool deleted_ = false;
+    
+    /// Colors for tasks.
+    const std::vector<QColor> colors = {
+		QColor(0xFF0000),
+		QColor(0xFF5900),
+		QColor(0xFFA300),
+		QColor(0xBAB400),
+		QColor(0x7AC700),
+		QColor(0x3CD100),
+		QColor(0x00D159),
+		QColor(0x00D1B5),
+		QColor(0x00BBD1),
+		QColor(0x0069D1),
+		QColor(0x001FFF),
+		QColor(0x6D00FF),
+		QColor(0xB900FF),
+		QColor(0xC900BB),
+		QColor(0xC90085),
+		QColor(0xC9006D),
+		QColor(0x8E000D),
+		QColor(0x8E3C00),
+		QColor(0x717302),
+		QColor(0x1E7302),
+		QColor(0x027344),
+		QColor(0x027371),
+		QColor(0x023C73),
+		QColor(0x020373),
+		QColor(0x4A0273),
+		QColor(0x730263)};
 };
 
 
