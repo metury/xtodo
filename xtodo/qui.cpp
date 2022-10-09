@@ -41,10 +41,14 @@ void MainWindow::changeColor(Task* task, size_t index){
 		ui->tasks->item(index)->setBackground(QColor(QColor::fromRgb(200,0,0)));
 		ui->tasks->item(index)->setForeground(QBrush(QColor::fromRgb(255,255,255)));
 	}
+	else if(task->isComplete()){
+		ui->tasks->item(index)->setBackground(QColor(QColor::fromRgb(255,255,255)));
+		ui->tasks->item(index)->setForeground(QBrush(QColor::fromRgb(123,123,123)));
+	}
 	else if(task->getPriority() == -1){
         return;
     }
-	else if(!task->isComplete()){
+	else{
 		size_t max = 157;
 		int red = 255 - std::min(max, task->getPriority()*21);
 		int green = std::min(max, task->getPriority()*12);
@@ -283,11 +287,11 @@ editwindow::~editwindow()
 
 void editwindow::write(){
     if (emptyDate_){
-        ui->complDateEdit->setStyleSheet("QLineEdit { background-color : red; color : white; }");
-        ui->createDateEdit->setStyleSheet("QLineEdit { background-color : red; color : white; }");
+        ui->complDateEdit->setStyleSheet("QLineEdit { background-color : darkRed; color : white; }");
+        ui->createDateEdit->setStyleSheet("QLineEdit { background-color : darkRed; color : white; }");
     }
     if(emptyText_){
-        ui->textEdit->setStyleSheet("QLineEdit { background-color : red; color : white; }");
+        ui->textEdit->setStyleSheet("QLineEdit { background-color : darkRed; color : white; }");
     }
     if(task_->getPriority() != -1){
         char chr = 'A' + task_->getPriority();
