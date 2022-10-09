@@ -166,6 +166,9 @@
    <property name="text">
     <string>Import</string>
    </property>
+   <property name="shortcut">
+    <string>I</string>
+   </property>
   </action>
   <action name="actionEdit">
    <property name="text">
@@ -198,13 +201,19 @@
    <property name="text">
     <string>Show deleted</string>
    </property>
+   <property name="shortcut">
+    <string>F11</string>
+   </property>
   </action>
   <action name="actionShow_done">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Show done</string>
+    <string>Show completed</string>
+   </property>
+   <property name="shortcut">
+    <string>F10</string>
    </property>
   </action>
   <action name="actionAdd">

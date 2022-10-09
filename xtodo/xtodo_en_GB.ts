@@ -84,10 +84,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show done</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
@@ -129,6 +125,22 @@
     </message>
     <message>
         <source>F5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>I</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>F11</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show completed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>F10</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
