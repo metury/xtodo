@@ -128,6 +128,9 @@ private:
     /// Whether to show deleted items.
     bool deleted_ = false;
     
+    /// Find string.
+    std::string matchingString_ = "";
+    
     /// Colors for tasks.
     const std::vector<QColor> colors = {
 		QColor(0xFF0000),

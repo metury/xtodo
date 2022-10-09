@@ -61,7 +61,7 @@ void MainWindow::refresh(){
     for(auto&& task : *tasks_){
         if (task.isComplete() && !done_){}
         else if (task.markedForDeletion() && !deleted_){}
-        else {
+        else if (task.match(matchingString_)){
             std::stringstream stream;
             stream << task;
             QString qstring = QString::fromStdString(stream.str());
@@ -76,24 +76,8 @@ void MainWindow::refresh(){
 }
 
 void MainWindow::refreshMatch(const std::string& match){
-	ui->tasks->clear();
-    size_t index = 0;
-    size_t colorIndex = 0;
-    for(auto&& task : *tasks_){
-        if (task.isComplete() && !done_){}
-        else if (task.markedForDeletion() && !deleted_){}
-        else if (task.match(match)){
-            std::stringstream stream;
-            stream << task;
-            QString qstring = QString::fromStdString(stream.str());
-            MyItem* item = new MyItem(index);
-            item->setText(qstring);
-            ui->tasks->addItem(item);
-            changeColor(&task,colorIndex);
-            ++colorIndex;
-        }
-        ++index;
-    }
+	matchingString_ = match;
+	refresh();
 }
 
 void MainWindow::undo(){
