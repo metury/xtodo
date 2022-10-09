@@ -45,7 +45,13 @@ int main(int argc, char * * argv){
 				printHelpArgs();
 				return 0;
 			}
+		}
+		
+		try{
 			ar.readConfig(settings, files, ofile);
+		}
+		catch(Exception e){
+			std::cout << e.what() << std::endl;
 		}
 		
 		// Load tasks.
@@ -62,7 +68,7 @@ int main(int argc, char * * argv){
             MainWindow w (&tasks, &reader, &ofile);
 			w.show();
             w.refresh();
-            if (argc == 1){
+            if (files.size() == 0){
 				w.openNew();
 			}
 			return a.exec();

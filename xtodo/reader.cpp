@@ -157,3 +157,17 @@ void Reader::saveFile(const Tasks& tasks, const std::string& ofile){
 	tasks.print(stream);
 	stream.close();
 }
+
+void ArgumentReader::saveConfigGUI(std::string& file){
+	std::ofstream ostream;
+	ostream.open(config);
+	if(!ostream.is_open()){
+		throw FileProcessingException(config, OUTPUT);
+	}
+	ostream << "# Running GUI interface." << std::endl;
+	ostream << "# User interface." << std::endl;
+	ostream << "CLIENT=GUI" << std::endl;
+	ostream << "# File." << std::endl;
+	ostream << "FILE=" << file << std::endl;
+	ostream.close();
+}

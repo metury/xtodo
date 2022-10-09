@@ -104,6 +104,9 @@ public slots:
     
     /// Quit the application.
     void quit();
+    
+    /// Save configuration to its file.
+    void saveConfig();
 
 private:
 	

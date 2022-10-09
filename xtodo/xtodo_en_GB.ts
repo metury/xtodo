@@ -143,6 +143,14 @@
         <source>F10</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Save configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+S</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>editwindow</name>

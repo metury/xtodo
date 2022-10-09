@@ -23,7 +23,7 @@ struct Settings{
 		bool save = false;
 		
 		/// Whether to read config file or not.
-		bool useConfig = false;
+		bool useConfig = true;
 };
 
 /// Read config file and arguments, also save config if needed.
@@ -43,6 +43,10 @@ class ArgumentReader{
         /// @param ofile Output file.
         /// @return If help was found, then do not run application and print helpline.
         bool parseArguments(const std::vector<std::string>& args, Settings& settings, std::vector<std::string>& files, std::string& ofile);
+        
+        /// Save configuration while running GUI client.
+        /// @param file Used fiel for tasks.
+        void saveConfigGUI(std::string& file);
     private:
 		
 		/// Save config file with current settings.

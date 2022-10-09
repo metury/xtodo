@@ -133,7 +133,7 @@ Task::Task(bool done, char priority){
 
 void Task::switchCompletion(){
 	completion_ = !completion_;
-	if(completion_){
+	if(completion_ && !(creation_date_.isEmpty())){
 		Date date;
 		date.currentDate();
 		this->setCompletionDate(date);

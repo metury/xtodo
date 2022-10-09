@@ -29,6 +29,7 @@ MainWindow::MainWindow( Tasks* tasks, Reader* reader, std::string* ofile, QWidge
     connect(ui->actionFind, SIGNAL (triggered()), this, SLOT(openFind()));
     connect(ui->actionReload, SIGNAL (triggered()), this, SLOT(reload()));
     connect(ui->actionQuit, SIGNAL (triggered()), this, SLOT(quit()));
+    connect(ui->actionConfig, SIGNAL (triggered()), this, SLOT(saveConfig()));
 }
 
 MainWindow::~MainWindow()
@@ -234,6 +235,17 @@ void MainWindow::import(){
         em->showMessage(QString::fromStdString(e.what()));
     }
     refresh();
+}
+
+void MainWindow::saveConfig(){
+	ArgumentReader ar;
+	try{
+		ar.saveConfigGUI(*ofile_);
+	}
+	catch(Exception e){
+		QErrorMessage* em = new QErrorMessage();
+        em->showMessage(QString::fromStdString(e.what()));
+	}
 }
 
 void MainWindow::checkDel(){

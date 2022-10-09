@@ -87,6 +87,7 @@
     <addaction name="actionImport"/>
     <addaction name="actionReload"/>
     <addaction name="actionQuit"/>
+    <addaction name="actionConfig"/>
    </widget>
    <widget class="QMenu" name="menuShow">
     <property name="title">
@@ -239,6 +240,14 @@
    <property name="shortcut">
     <string>F5</string>
    </property>
+  </action>
+  <action name = "actionConfig">
+	  <property name="text">
+		  <string>Save configuration</string>
+	  </property>
+	  <property name="shortcut">
+		  <string>Ctrl+Shift+S</string>
+	  </property>
   </action>
  </widget>
  <resources/>
