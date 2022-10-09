@@ -1,5 +1,7 @@
 # Příslušné dokumenty
 
+* **POZNÁMKA:** Všechny dokumenty nejsou aktualizované.
+
 ![Uživatelská příručka](uzivatelska-prirucka.md)
 
 ![Abstraktní dokumentace](dokumentace.md)
