@@ -7,15 +7,15 @@
     <x>0</x>
     <y>0</y>
     <width>200</width>
-    <height>50</height>
+    <height>80</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Find</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>icon.ico</normaloff>icon.ico</iconset>
+   <iconset resource="../resources/resources.qrc">
+    <normaloff>:/xtodo.png</normaloff>:/xtodo.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -56,7 +56,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../resources/resources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

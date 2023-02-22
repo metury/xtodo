@@ -26,8 +26,8 @@
    <string>xtodo</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>icon.ico</normaloff>icon.ico</iconset>
+   <iconset resource="../resources/resources.qrc">
+    <normaloff>:/xtodo.png</normaloff>:/xtodo.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="sizePolicy">
@@ -241,15 +241,17 @@
     <string>F5</string>
    </property>
   </action>
-  <action name = "actionConfig">
-	  <property name="text">
-		  <string>Save configuration</string>
-	  </property>
-	  <property name="shortcut">
-		  <string>Ctrl+Shift+S</string>
-	  </property>
+  <action name="actionConfig">
+   <property name="text">
+    <string>Save configuration</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../resources/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
