@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
+    <width>773</width>
     <height>550</height>
    </rect>
   </property>
@@ -44,27 +44,40 @@
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <widget class="QListWidget" name="tasks">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>1</horstretch>
-        <verstretch>1</verstretch>
-       </sizepolicy>
+     <widget class="QTreeWidget" name="tasks">
+      <property name="columnCount">
+       <number>6</number>
       </property>
-      <property name="sizeIncrement">
-       <size>
-        <width>1</width>
-        <height>1</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Monospace</family>
-       </font>
-      </property>
-      <property name="sizeAdjustPolicy">
-       <enum>QAbstractScrollArea::AdjustToContents</enum>
-      </property>
+      <column>
+       <property name="text">
+        <string notr="true">1</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string notr="true">2</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string notr="true">3</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string notr="true">4</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string notr="true">5</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string notr="true">6</string>
+       </property>
+      </column>
      </widget>
     </item>
    </layout>
@@ -74,7 +87,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>500</width>
+     <width>773</width>
      <height>23</height>
     </rect>
    </property>

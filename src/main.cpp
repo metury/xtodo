@@ -50,7 +50,7 @@ int main(int argc, char * * argv){
 		try{
 			ar.readConfig(settings, files, ofile);
 		}
-		catch(Exception e){
+		catch(Exception& e){
 			std::cout << e.what() << std::endl;
 		}
 		
@@ -65,10 +65,10 @@ int main(int argc, char * * argv){
 		}
 		else{
 			QApplication a(argc, argv);
-            MainWindow w (&tasks, &reader, &ofile);
+			MainWindow w (&tasks, &reader, &ofile);
 			w.show();
-            w.refresh();
-            if (files.size() == 0){
+			w.refresh();
+			if (files.size() == 0){
 				w.openNew();
 			}
 			return a.exec();

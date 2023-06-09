@@ -2,12 +2,15 @@
 <ui version="4.0">
  <class>editwindow</class>
  <widget class="QDialog" name="editwindow">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>494</width>
-    <height>275</height>
+    <width>546</width>
+    <height>245</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,122 +20,98 @@
    <iconset resource="../resources/resources.qrc">
     <normaloff>:/xtodo.png</normaloff>:/xtodo.png</iconset>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_6">
-     <item>
-      <widget class="QLabel" name="priorityLabel">
-       <property name="font">
-        <font>
-         <family>Monospace</family>
-        </font>
-       </property>
-       <property name="text">
-        <string>Priority:       </string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="priorEdit"/>
-     </item>
-    </layout>
+  <layout class="QFormLayout" name="formLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="priorityLabel">
+     <property name="font">
+      <font>
+       <family>Noto Sans</family>
+      </font>
+     </property>
+     <property name="text">
+      <string>Priority:</string>
+     </property>
+    </widget>
    </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_5">
-     <item>
-      <widget class="QLabel" name="complDateLabel">
-       <property name="font">
-        <font>
-         <family>Monospace</family>
-        </font>
-       </property>
-       <property name="text">
-        <string>Completion date:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="complDateEdit"/>
-     </item>
-    </layout>
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="priorEdit"/>
    </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_4">
-     <item>
-      <widget class="QLabel" name="creatDateLabel">
-       <property name="font">
-        <font>
-         <family>Monospace</family>
-        </font>
-       </property>
-       <property name="text">
-        <string>Creation date:  </string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="createDateEdit"/>
-     </item>
-    </layout>
+   <item row="1" column="0">
+    <widget class="QLabel" name="complDateLabel">
+     <property name="font">
+      <font>
+       <family>Noto Sans</family>
+      </font>
+     </property>
+     <property name="text">
+      <string>Completion date:</string>
+     </property>
+    </widget>
    </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <widget class="QLabel" name="textLabel">
-       <property name="font">
-        <font>
-         <family>Monospace</family>
-        </font>
-       </property>
-       <property name="text">
-        <string>Text:           </string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="textEdit"/>
-     </item>
-    </layout>
+   <item row="1" column="1">
+    <widget class="QLineEdit" name="complDateEdit"/>
    </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="QLabel" name="contextLabel">
-       <property name="font">
-        <font>
-         <family>Monospace</family>
-        </font>
-       </property>
-       <property name="text">
-        <string>Context tag:    </string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="contextEdit"/>
-     </item>
-    </layout>
+   <item row="2" column="0">
+    <widget class="QLabel" name="creatDateLabel">
+     <property name="font">
+      <font>
+       <family>Noto Sans</family>
+      </font>
+     </property>
+     <property name="text">
+      <string>Creation date:</string>
+     </property>
+    </widget>
    </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLabel" name="projectLabel">
-       <property name="font">
-        <font>
-         <family>Monospace</family>
-        </font>
-       </property>
-       <property name="text">
-        <string>Project tag:    </string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="projectEdit"/>
-     </item>
-    </layout>
+   <item row="2" column="1">
+    <widget class="QLineEdit" name="createDateEdit"/>
    </item>
-   <item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="textLabel">
+     <property name="font">
+      <font>
+       <family>Noto Sans</family>
+      </font>
+     </property>
+     <property name="text">
+      <string>Text:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QLineEdit" name="textEdit"/>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="contextLabel">
+     <property name="font">
+      <font>
+       <family>Noto Sans</family>
+      </font>
+     </property>
+     <property name="text">
+      <string>Context tag:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QLineEdit" name="contextEdit"/>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="projectLabel">
+     <property name="font">
+      <font>
+       <family>Noto Sans</family>
+      </font>
+     </property>
+     <property name="text">
+      <string>Project tag:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QLineEdit" name="projectEdit"/>
+   </item>
+   <item row="6" column="1">
     <layout class="QHBoxLayout" name="horizontalLayout_7">
      <item>
       <widget class="QDialogButtonBox" name="buttonBox">

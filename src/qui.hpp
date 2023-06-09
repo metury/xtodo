@@ -6,7 +6,7 @@
 #include <QMainWindow>
 #include <QErrorMessage>
 #include <QFileDialog>
-#include <QListWidgetItem>
+#include <QTreeWidgetItem>
 #include <string>
 #include <typeinfo>
 #include "task.hpp"
@@ -53,7 +53,7 @@ public:
     
     /// Return index of the task that is selected.
     /// @return Its index.
-    size_t selectedItem(QListWidgetItem* item);
+    size_t selectedItem(QTreeWidgetItem* item);
     
     /// For showing found tasks.
     void showFound(std::string match);
@@ -210,7 +210,7 @@ private:
 };
 
 /// Derivative of list widget item to store index of the task.
-class MyItem : public QListWidgetItem{
+class MyItem : public QTreeWidgetItem {
 	public:
 	
 		/// Default constructor.

@@ -39,18 +39,18 @@ MainWindow::~MainWindow()
 
 void MainWindow::changeColor(Task* task, size_t index){
     if(task->text() == "" || (!task->getCompletionDate().isEmpty() &&  task->getCreationDate().isEmpty())){
-		ui->tasks->item(index)->setBackground(QColor(QColor(0x972323)));
-		ui->tasks->item(index)->setForeground(QBrush(QColor(0xFFFFFF)));
+		ui->tasks->topLevelItem(index)->setBackground(0, QColor(QColor(0x972323)));
+		ui->tasks->topLevelItem(index)->setForeground(0, QBrush(QColor(0xFFFFFF)));
 	}
 	else if(task->isComplete()){
-		ui->tasks->item(index)->setBackground(QColor(QColor(0xFFFFFF)));
-		ui->tasks->item(index)->setForeground(QBrush(QColor(0x989898)));
+		ui->tasks->topLevelItem(index)->setBackground(0, QColor(QColor(0xFFFFFF)));
+		ui->tasks->topLevelItem(index)->setForeground(0, QBrush(QColor(0x989898)));
 	}
 	else if(task->getPriority() == -1){
         return;
     }
 	else{
-		ui->tasks->item(index)->setForeground(QBrush(colors[task->getPriority()]));
+		ui->tasks->topLevelItem(index)->setForeground(0, QBrush(colors[task->getPriority()]));
 	}
 }
 
@@ -66,8 +66,11 @@ void MainWindow::refresh(){
             stream << task;
             QString qstring = QString::fromStdString(stream.str());
             MyItem* item = new MyItem(index);
-            item->setText(qstring);
-            ui->tasks->addItem(item);
+            item->setText(0, QString::fromStdString(std::to_string(task.getPriority())));
+            item->setText(3, QString::fromStdString(task.getText()));
+            item->setText(4, QString::fromStdString(task.getProject()));
+            item->setText(4, QString::fromStdString(task.getContext()));
+            ui->tasks->addTopLevelItem(item);
             changeColor(&task,colorIndex);
             ++colorIndex;
         }
@@ -81,31 +84,31 @@ void MainWindow::refreshMatch(const std::string& match){
 }
 
 void MainWindow::undo(){
-    int index = ui->tasks->currentRow();
+    //int index = ui->tasks->currentItem();
     tasks_->undo();
     refresh();
-    ui->tasks->setCurrentRow(index);
+    //ui->tasks->setCurrentRow(index);
 }
 
 void MainWindow::redo(){
-    int index = ui->tasks->currentRow();
+    //int index = ui->tasks->currentRow();
     tasks_->redo();
     refresh();
-    ui->tasks->setCurrentRow(index);
+    //ui->tasks->setCurrentRow(index);
 }
 
 void MainWindow::quit(){
 	try{
 		reader_->saveFile((*tasks_), (*ofile_));
 	}
-	catch(Exception e){
+	catch(Exception& e){
 		QErrorMessage* em = new QErrorMessage();
         em->showMessage(QString::fromStdString(e.what()));
 	}
 	this->close();
 }
 
-size_t MainWindow::selectedItem(QListWidgetItem* item){
+size_t MainWindow::selectedItem(QTreeWidgetItem* item){
 	if (typeid(*item) == typeid(MyItem)){
 		auto temp = dynamic_cast<MyItem&>(*item);
 		return temp.getIndex();
@@ -137,8 +140,9 @@ void MainWindow::add(){
 
 void MainWindow::myDelete(){
 	if(ui->tasks->selectedItems().size() > 0){
-		size_t index = selectedItem(ui->tasks->selectedItems()[0]);
-		int rowIndex = ui->tasks->currentRow();
+		auto item = dynamic_cast<MyItem*>(ui->tasks->currentItem());
+		size_t index = item->getIndex();
+		//int rowIndex = ui->tasks->currentRow();
 		try{
 			tasks_ -> at(index).switchDeletion();
 			refresh();
@@ -146,16 +150,17 @@ void MainWindow::myDelete(){
 			QErrorMessage* em = new QErrorMessage();
 			em->showMessage(QString::fromStdString(e.what()));
 		}
-		if(deleted_){
-			ui->tasks->setCurrentRow(rowIndex);
-		}
+		//if(deleted_){
+			//ui->tasks->setCurrentRow(rowIndex);
+		//}
 	}
 }
 
 void MainWindow::done(){
 	if(ui->tasks->selectedItems().size() > 0){
-		size_t index = selectedItem(ui->tasks->selectedItems()[0]);
-		int rowIndex = ui->tasks->currentRow();
+		auto item = dynamic_cast<MyItem*>(ui->tasks->currentItem());
+		size_t index = item->getIndex();
+		//int rowIndex = ui->tasks->currentRow();
 		try{
 			tasks_ -> at(index).switchCompletion ();
 			refresh();
@@ -163,9 +168,9 @@ void MainWindow::done(){
 			QErrorMessage* em = new QErrorMessage();
 			em->showMessage(QString::fromStdString(e.what()));
 		}
-		if(done_){
-			ui->tasks->setCurrentRow(rowIndex);
-		}
+		//if(done_){
+			//ui->tasks->setCurrentRow(rowIndex);
+		//}
 	}
 }
 
@@ -226,7 +231,7 @@ void MainWindow::saveConfig(){
 	try{
 		ar.saveConfigGUI(*ofile_);
 	}
-	catch(Exception e){
+	catch(Exception& e){
 		QErrorMessage* em = new QErrorMessage();
         em->showMessage(QString::fromStdString(e.what()));
 	}
