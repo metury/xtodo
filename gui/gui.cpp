@@ -4,7 +4,9 @@
 
 MainWindow::MainWindow(tasks* tasks, file_parser* reader, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), tasks_(tasks), reader_(reader){
     ui->setupUi(this);
-    // Connect all buttons / key shortcuts to its function.
+    QStringList list;
+    list << "Priority" << "Creation Date" << "Completion Date" << "Text" << "Project" << "Context";
+    ui->tasks->setHeaderLabels(list);
     connect(ui->actionEdit, SIGNAL (triggered()), this, SLOT(edit()));
     connect(ui->actionDone, SIGNAL (triggered()), this, SLOT(done()));
     connect(ui->actionAdd, SIGNAL (triggered()), this, SLOT(add()));
