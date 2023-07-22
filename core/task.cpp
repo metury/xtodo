@@ -105,6 +105,13 @@ bool date::is_empty() const{
     return (year == 0 && month == 0 && day == 0);
 }
 
+std::string date::str() const{
+    if(is_empty()) return "";
+    std::stringstream ss;
+    ss << day << ". " << month << ". " << year;
+    return ss.str();
+}
+
 task::task(bool done, char priority) : completion_(done){
 	if(priority == '0')
 		priority_ = -1;

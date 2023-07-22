@@ -42,6 +42,8 @@ struct date{
 		int month;
 		/// Number of year.
 		int year;
+		/// Create a string.
+		std::string str() const;
 };
 
 /// To use default << operator to print date.

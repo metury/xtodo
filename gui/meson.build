@@ -5,11 +5,11 @@ project('xtodo', 'cpp',
 qt6 = import('qt6')
 qt6_dep = dependency('qt6', modules: ['Core', 'Gui', 'Widgets'])
 
-source = files('src/main.cpp', 'src/exception.cpp', 'src/qui.cpp', 'src/reader.cpp', 'src/task.cpp', 'src/terminal.cpp')
+source = files('main.cpp', '../core/exception.cpp', 'gui.cpp', '../core/reader.cpp', '../core/task.cpp')
 
 resources = qt6.compile_resources(sources: ['resources/resources.qrc'])
-ui_files = qt6.compile_ui(sources: ['src/mainwindow.ui', 'src/editwindow.ui', 'src/findwindow.ui'])
-moc_files = qt6.compile_moc(headers : ['src/qui.hpp'])
+ui_files = qt6.compile_ui(sources: ['mainwindow.ui', 'editwindow.ui', 'findwindow.ui'])
+moc_files = qt6.compile_moc(headers : ['gui.hpp'])
 
 executable('xtodo',
 	source, moc_files, ui_files, resources,

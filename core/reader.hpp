@@ -21,7 +21,7 @@ class file_parser{
         bool parse_arguments(const std::vector<std::string>& args);
 		/// Read config file.
         void read_config();
-
+        void set_file(const std::string& path);
 
 
 		/// Read all files in given vector and add all tasks.

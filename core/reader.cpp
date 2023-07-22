@@ -21,6 +21,8 @@ file_parser::file_parser(){
 	if(!std::filesystem::exists(config_)){
 		save_config();
 	}
+	use_config_ = true;
+	save_config_ = true;
 }
 
 void file_parser::read_config(){
@@ -136,7 +138,14 @@ void file_parser::readFile(const std::string& file, tasks& tasks){
     }
 }
 
+void file_parser::set_file(const std::string& path){
+    ofile_ = path;
+    files_.clear();
+    files_.push_back(path);
+}
+
 void file_parser::save_file(const tasks& tasks){
+    if(ofile_.empty()) return;
 	try{
         std::ofstream stream;
         stream.open(ofile_);
