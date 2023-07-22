@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="xtodo" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="default">
+				<Option output="xtodo" prefix_auto="1" extension_auto="1" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+			</Target>
+		</Build>
+		<Unit filename="cli/main.cpp" />
+		<Unit filename="cli/terminal.cpp" />
+		<Unit filename="cli/terminal.hpp" />
+		<Unit filename="core/exception.cpp" />
+		<Unit filename="core/exception.hpp" />
+		<Unit filename="core/reader.cpp" />
+		<Unit filename="core/reader.hpp" />
+		<Unit filename="core/task.cpp" />
+		<Unit filename="core/task.hpp" />
+		<Unit filename="gui/gui.cpp" />
+		<Unit filename="gui/gui.hpp" />
+		<Unit filename="gui/main.cpp" />
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -12,9 +12,9 @@ void printEditPart(const std::string& text, std::string& before){
 	std::cout << " -> ";
 }
 
-void printEditDate(const std::string& text, const Date& date){
+void printEditDate(const std::string& text, const date& date){
 	std::cout << text << " ";
-	if(date.isEmpty()){
+	if(date.is_empty()){
 		std::cout << "/";
 	}
 	else{
@@ -23,65 +23,65 @@ void printEditDate(const std::string& text, const Date& date){
 	std::cout << " -> ";
 }
 
-void edit(Task& task, std::string& text){
+void edit(task& task, std::string& text){
 	std::string line;
-	std::cout << "Priority: " << (task.getPriority() == -1 ? '/' : char('A'+task.getPriority())) << " -> ";
+	std::cout << "Priority: " << (task.get_priority() == -1 ? '/' : char('A'+task.get_priority())) << " -> ";
 	getline(std::cin, line);
 	if(line.length() == 1 && line[0] <= 'Z' && line[0] >= 'A'){
-		task.setPriority(line[0]);
+		task.set_priority(line[0]);
 	}
 	else if(line[0] == '/'){
-		task.setPriority('0');
+		task.set_priority('0');
 	}
-	printEditDate("Completion date:", task.getCompletionDate());
+	printEditDate("Completion date:", task.get_completion_date());
 	getline(std::cin, line);
 	if(line[0] == '/'){
-		task.setCompletionDate(Date());
+		task.set_completion_date(date());
 	}
 	else if(line.length() >= 1){
-		task.setCompletionDate(line);
+		task.set_completion_date(line);
 	}
 	do {
-		printEditDate("Creation date:", task.getCreationDate());
+		printEditDate("Creation date:", task.get_creation_date());
 		getline(std::cin, line);
 		if(line[0] == '/'){
-			task.setCreationDate(Date());
+			task.set_creation_date(date());
 		}
 		else if(line.length() >= 1){
-			task.setCreationDate(line);
+			task.set_creation_date(line);
 		}
-		if(!task.getCompletionDate().isEmpty() && task.getCreationDate().isEmpty()){
+		if(!task.get_completion_date().is_empty() && task.get_creation_date().is_empty()){
 			std::cout << "If completion date is set, creation date need to be specified as well." << std::endl;
 		}
-	} while(!task.getCompletionDate().isEmpty() && task.getCreationDate().isEmpty());
+	} while(!task.get_completion_date().is_empty() && task.get_creation_date().is_empty());
 	do {
-		printEditPart("Text:", task.text());
+		printEditPart("Text:", task.set_text());
 		getline(std::cin, line);
 		if(line.length() >= 1){
-			task.text() = line;
+			task.set_text() = line;
 			break;
 		}
-		if(task.text() == ""){
+		if(task.set_text() == ""){
 			std::cout << "Text cannot be empty!" << std::endl;
 		}
-	} while(task.text() == "");
-	printEditPart("Context tag:", task.context());
+	} while(task.set_text() == "");
+	printEditPart("Context tag:", task.set_context());
 	getline(std::cin, line);
 	if(line[0] == '/'){
-		task.context() = "";
+		task.set_context() = "";
 	}
 	else if(line.length() >= 1){
-		task.context() = line;
+		task.set_context() = line;
 	}
-	printEditPart("Project tag:", task.project());
+	printEditPart("Project tag:", task.set_project());
 	getline(std::cin, line);
 	if(line[0] == '/'){
-		task.project() = "";
+		task.set_project() = "";
 	}
 	else if(line.length() >= 1){
-		task.project() = line;
-	} 
-	
+		task.set_project() = line;
+	}
+
 	std::cout << text << task << std::endl;
 }
 
@@ -106,21 +106,21 @@ void print_help(){
 	std::cout << "This will prompt a new dialogue and everytime if you press only enter it will not change, or if you paste / it will be read as replace for nothing." << std::endl;
 }
 
-void terminal_run(Tasks& tasks, file_parser& reader){
+void terminal_run(tasks& tasks, file_parser& reader){
 	std::string line;
-	std::cout << "x++: ";
+	std::cout << prefix;
 	while (getline(std::cin, line)){
 		std::vector<std::string> parts(0);
-		splitString(line, ' ', parts);
+		split_string(line, ' ', parts);
 		if(parts.size() == 0){
-			std::cout << "x++: ";
+			std::cout << prefix;
 			continue;
 		}
 		if(line == "show"){
-			tasks.printTasks();
+			tasks.print_tasks();
 		}
 		else if(line == "showall"){
-			tasks.printAllTasks();
+			tasks.print_all_Tasks();
 		}
 		else if(line == "save"){
 			reader.save_file(tasks);
@@ -147,12 +147,12 @@ void terminal_run(Tasks& tasks, file_parser& reader){
 		else if (parts[0] == "add"){
 			if(parts.size() > 1){
 				std::string writtentask;
-				bindStrings(parts,1,parts.size(),writtentask);
-				tasks.addTask(writtentask);
+				bind_strings(parts,1,parts.size(),writtentask);
+				tasks.add_task(writtentask);
 			}
 			else{
 				std::string text = "Added task: ";
-				edit(tasks.addEmpty(), text);
+				edit(tasks.add_empty(), text);
 			}
 		}
 		else if (parts.size() > 1 && parts[0] == "edit"){
@@ -163,7 +163,7 @@ void terminal_run(Tasks& tasks, file_parser& reader){
 						position = stoi(parts[1]);
 					} catch(std::out_of_range& e){
 						std::cout << "This is way too large number" << std::endl;
-						std::cout << "x++: ";
+						std::cout << prefix;
 						continue;
 					}
 					std::string text = "Chnaged to: ";
@@ -182,10 +182,10 @@ void terminal_run(Tasks& tasks, file_parser& reader){
 							position = stoi(parts[i]);
 						} catch(std::out_of_range& e){
 							std::cout << "This is way too large number" << std::endl;
-							if (i == parts.size() - 1){ std::cout << "x++: ";}
+							if (i == parts.size() - 1){ std::cout << prefix;}
 							continue;
 						}
-						tasks.at(position).switchDeletion();
+						tasks.at(position).switch_deletion();
 					} catch(Exception& e){
 						std::cout << e.what() << std::endl;
 					}
@@ -201,10 +201,10 @@ void terminal_run(Tasks& tasks, file_parser& reader){
 							position = stoi(parts[i]);
 						} catch(std::out_of_range& e){
 							std::cout << "This is way too large number" << std::endl;
-							if (i == parts.size() - 1){ std::cout << "x++: ";}
+							if (i == parts.size() - 1){ std::cout << prefix;}
 							continue;
 						}
-						tasks.at(position).switchCompletion();
+						tasks.at(position).switch_completion();
 					} catch(Exception& e){
 						std::cout << e.what() << std::endl;
 					}
@@ -218,7 +218,7 @@ void terminal_run(Tasks& tasks, file_parser& reader){
 					if (index < 10){
 						std::cout << "0";
 					}
-					std::cout << index << ": " << task << std::endl; 
+					std::cout << index << ": " << task << std::endl;
 					++index;
 				}
 			}
@@ -228,7 +228,7 @@ void terminal_run(Tasks& tasks, file_parser& reader){
 			tasks.clear();
 			reader.read_files(tasks);
 		}
-		std::cout << "x++: ";
-	} 
+		std::cout << prefix;
+	}
 	std::cout << "Program terminated with EOF." << std::endl;
 }

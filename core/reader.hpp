@@ -10,7 +10,6 @@
 #include "task.hpp"
 #include "exception.hpp"
 
-
 /// File parser and argumetn parser.
 class file_parser{
     public:
@@ -22,24 +21,24 @@ class file_parser{
         bool parse_arguments(const std::vector<std::string>& args);
 		/// Read config file.
         void read_config();
-       
-        
-		
+
+
+
 		/// Read all files in given vector and add all tasks.
 		/// @param tasks Where to store all tasks.
-        void read_files(Tasks& tasks);
+        void read_files(tasks& tasks);
 		/// Save current state of tasks to output file.
 		/// @param tasks From where to get tasks.
-        void save_file(const Tasks& tasks);
-		
+        void save_file(const tasks& tasks);
+
         /// read only one file.
         /// @param file Whhich file to read.
         /// @param tasks Where to store all tasks.
-        void readFile(const std::string& file, Tasks& tasks);
+        void readFile(const std::string& file, tasks& tasks);
 		/// Save configuration while running GUI client.
         /// @param file Used fiel for tasks.
         void saveConfigGUI(std::string& file);
-		
+
     private:
 		/// Save config file with current settings.
 		/// @param settings Current stettings.

@@ -1,7 +1,22 @@
-/// @file task.hpp Source file for classes Task, Tasks and everything related to them.
+/// @file Source file for classes Task, Tasks and everything related to them.
 #include "task.hpp"
 
-void splitString(const std::string& line, const char splitter, std::vector<std::string>& parts){
+void bind_strings(const std::vector<std::string>& parts, size_t start, size_t end, std::string& bind){
+	std::stringstream stream;
+	bool first = true;
+	for (size_t i = start; i < end; ++i){
+		if(first){
+			stream << parts[i];
+			first = false;
+		}
+		else{
+			stream << " " << parts[i];
+		}
+	}
+	bind = stream.str();
+}
+
+void split_string(const std::string& line, const char splitter, std::vector<std::string>& parts){
 	size_t begin = 0;
 	for(size_t i = 0; i < line.length(); ++i){
 		if(line[i] == splitter){
@@ -18,22 +33,9 @@ void splitString(const std::string& line, const char splitter, std::vector<std::
 	}
 }
 
-void bindStrings(const std::vector<std::string>& parts, size_t start, size_t end,std::string& bind){
-	std::stringstream stream;
-	bool first = true;
-	for (size_t i = start; i < end; ++i){
-		if(first){
-			stream << parts[i];
-			first = false;
-		}
-		else{
-			stream << " " << parts[i];
-		}
-	}
-	bind = stream.str();
-}
+// ++ Date ++
 
-bool isDate(const std::string& text){
+bool is_date(const std::string& text){
 	if(text.length() > 10){
 		return false;
 	}
@@ -62,20 +64,19 @@ bool isDate(const std::string& text){
 	return false;
 }
 
-Date convertDate(const std::string& writtenDate){
+date convert_date(const std::string& writtenDate){
     std::vector<std::string> parts;
-    splitString(writtenDate, '-', parts);
+    split_string(writtenDate, '-', parts);
     int year = std::stoi(parts[0]);
     int month = std::stoi(parts[1]);
     int day = std::stoi(parts[2]);
     if (month > 12 || day > 31){
 		year = month = day =0;
 	}
-    Date date = Date(year, month, day);
-    return date;
+    return {year, month, day};
 }
 
-void Date::currentDate(){
+void date::current_date(){
 	std::time_t t = std::time(0);
     std::tm* now = std::localtime(&t);
     year = (now->tm_year + 1900);
@@ -83,81 +84,56 @@ void Date::currentDate(){
     day = now->tm_mday;
 }
 
-bool operator<(const Date& date1, const Date& date2){
-	if(date1.isEmpty() && !date2.isEmpty()){
-		return false;
-	}
-	else if(!date1.isEmpty() && date2.isEmpty()){
-		return true;
-	}
-	if (date1.year < date2.year){
-		return true;
-	}
-	else if(date1.year > date2.year){
-		return false;
-	}
-	if (date1.month < date2.month){
-		return true;
-	}
-	else if(date1.month > date2.month){
-		return false;
-	}
-	if (date1.day < date2.day){
-		return true;
-	}
-	else if(date1.day > date2.day){
-		return false;
-	}
+bool operator<(const date& date1, const date& date2){
+	if(date1.is_empty() && !date2.is_empty()) return false;
+	else if(!date1.is_empty() && date2.is_empty()) return true;
+
+	if (date1.year < date2.year) return true;
+	else if(date1.year > date2.year) return false;
+
+	if (date1.month < date2.month) return true;
+    else if(date1.month > date2.month) return false;
+
+	if (date1.day < date2.day) return true;
+	else if(date1.day > date2.day) return false;
 	return true;
 }
 
-Date::Date(int y, int m, int d){
-    year = y;
-    month = m;
-    day = d;
-}
+date::date(int y, int m, int d) : day(d), month(m), year(y){}
 
-bool Date::isEmpty() const{
+bool date::is_empty() const{
     return (year == 0 && month == 0 && day == 0);
 }
 
-Task::Task(bool done, char priority){
-	completion_ = done;
-	if(priority == '0'){
+task::task(bool done, char priority) : completion_(done){
+	if(priority == '0')
 		priority_ = -1;
-	}
-	else{
+	else
 		priority_ = priority - 'A';
-	}
 }
 
-void Task::switchCompletion(){
+void task::switch_completion(){
 	completion_ = !completion_;
-	if(completion_ && !(creation_date_.isEmpty())){
-		Date date;
-		date.currentDate();
-		this->setCompletionDate(date);
-	}
-	else{
-		Date date;
-		this->setCompletionDate(date);
+	date date;
+	if(completion_ && !(creation_date_.is_empty()))
+		date.current_date();
+    set_completion_date(date);
+}
+
+void task::set_completion_date(std::string& date){
+	if (is_date(date)){
+		completion_date_ = convert_date(date);
 	}
 }
 
-void Task::setCompletionDate(std::string date){
-	if (isDate(date)){
-		completion_date_ = convertDate(date);
+void task::set_creation_date(std::string& date){
+	if(is_date(date)){
+		creation_date_ = convert_date(date);
 	}
 }
 
-void Task::setCreationDate(std::string date){
-	if(isDate(date)){
-		creation_date_ = convertDate(date);
-	}
-}
-
-std::ostream& operator<<(std::ostream& os, const Date& date){
-	if(date.isEmpty()){
+std::ostream& operator<<(std::ostream& os, const date& date){
+	if(date.is_empty()){
 		return os;
 	}
 	os << date.year << "-";
@@ -172,71 +148,71 @@ std::ostream& operator<<(std::ostream& os, const Date& date){
 	return os;
 }
 
-std::ostream& operator<<(std::ostream& os, const Task& task){
-	if (task.markedForDeletion()){
+std::ostream& operator<<(std::ostream& os, const task& task){
+	if (task.marked_for_deletion()){
 		os << "Delete: ";
 	}
-	if (task.isComplete()){
+	if (task.is_complete()){
 		os << "x ";
 	}
-	if (task.getPriority() != -1){
-		os << "(" << char('A'+task.getPriority()) << ") ";
+	if (task.get_priority() != -1){
+		os << "(" << char('A'+task.get_priority()) << ") ";
 	}
-	if (!task.getCompletionDate().isEmpty()){
-        os << task.getCompletionDate();
+	if (!task.get_completion_date().is_empty()){
+        os << task.get_completion_date();
         os << " ";
     }
-    if (!task.getCreationDate().isEmpty()){
-        os << task.getCreationDate();
+    if (!task.get_creation_date().is_empty()){
+        os << task.get_creation_date();
         os << " ";
     }
-	os << task.getText();
-    if (task.getProject() != ""){
-        os << " +" << task.getProject();
+	os << task.get_text();
+    if (task.get_project() != ""){
+        os << " +" << task.get_project();
     }
-    if (task.getContext() != ""){
-        os << " @" << task.getContext();
+    if (task.get_context() != ""){
+        os << " @" << task.get_context();
     }
     return os;
 }
 
-bool operator<(const Task& task1, const Task& task2){
-	if(task1.markedForDeletion() && !task2.markedForDeletion()){
+bool operator<(const task& task1, const task& task2){
+	if(task1.marked_for_deletion() && !task2.marked_for_deletion()){
 		return false;
 	}
-	else if (!task1.markedForDeletion() && task2.markedForDeletion()){
+	else if (!task1.marked_for_deletion() && task2.marked_for_deletion()){
 		return true;
 	}
-	if (task1.isComplete() && !task2.isComplete()){
+	if (task1.is_complete() && !task2.is_complete()){
 		return false;
 	}
-	else if (!task1.isComplete() && task2.isComplete()){
+	else if (!task1.is_complete() && task2.is_complete()){
 		return true;
 	}
-	if (task1.getPriority() < task2.getPriority()){
+	if (task1.get_priority() < task2.get_priority()){
 		return true;
 	}
-	else if (task1.getPriority() > task2.getPriority()){
+	else if (task1.get_priority() > task2.get_priority()){
 		return false;
 	}
-	if(task1.getCompletionDate() < task2.getCompletionDate()){
+	if(task1.get_completion_date() < task2.get_completion_date()){
 		return true;
 	}
-	else if(task2.getCompletionDate() < task1.getCompletionDate()){
+	else if(task2.get_completion_date() < task1.get_completion_date()){
 		return false;
 	}
-	if (task1.getCreationDate() < task2.getCreationDate()){
+	if (task1.get_creation_date() < task2.get_creation_date()){
 		return true;
 	}
-	else if(task2.getCreationDate() < task1.getCreationDate()){
+	else if(task2.get_creation_date() < task1.get_creation_date()){
 		return false;
 	}
 	return true;
 }
 
-void Tasks::addTask(const std::string& line){
+void tasks::add_task(const std::string& line){
 	std::vector<std::string> parts;
-	splitString(line, ' ', parts);
+	split_string(line, ' ', parts);
 	size_t begin = 0;
 	bool done = false;
 	char priority = '0';
@@ -251,49 +227,49 @@ void Tasks::addTask(const std::string& line){
 		priority = parts[begin][1];
 		++begin;
 	}
-	Task* temp = new Task(done, priority);
-	if(isDate(parts[begin])){
-		if (isDate(parts[begin+1])){
-			temp->setCreationDate(parts[begin]);
-			temp->setCompletionDate(parts[begin+1]);
+	task* temp = new task(done, priority);
+	if(is_date(parts[begin])){
+		if (is_date(parts[begin+1])){
+			temp->set_creation_date(parts[begin]);
+			temp->set_completion_date(parts[begin+1]);
 			begin += 2;
 		}
 		else{
-			temp->setCreationDate(parts[begin]);
+			temp->set_creation_date(parts[begin]);
 			++begin;
 		}
 	}
 	size_t textBeg = begin;
 	for(; begin < parts.size(); ++begin){
 		if(parts[begin][0] == '@'){
-			temp->context() = parts[begin].substr(1, parts[begin].length()-1);
+			temp->set_context() = parts[begin].substr(1, parts[begin].length()-1);
 			if(begin == textBeg){
 				++textBeg;
 			}
-			else if(temp->text() == ""){
-				bindStrings(parts, textBeg, begin, temp->text());
+			else if(temp->set_text() == ""){
+				bind_strings(parts, textBeg, begin, temp->set_text());
 			}
 		}
 		else if(parts[begin][0] == '+'){
-			temp->project() = parts[begin].substr(1, parts[begin].length()-1);
+			temp->set_project() = parts[begin].substr(1, parts[begin].length()-1);
 			if(begin == textBeg){
 				++textBeg;
 			}
-			else if(temp->text() == ""){
-				bindStrings(parts, textBeg, begin, temp->text());
+			else if(temp->set_text() == ""){
+				bind_strings(parts, textBeg, begin, temp->set_text());
 			}
 		}
 	}
-	if(temp->text() == ""){
-		bindStrings(parts, textBeg, begin, temp->text());
+	if(temp->set_text() == ""){
+		bind_strings(parts, textBeg, begin, temp->set_text());
 	}
 	tasks_.push_back(temp);
 }
 
-void Tasks::printTasks(std::ostream& os){
+void tasks::print_tasks(std::ostream& os){
 	size_t index = 0;
 	for(auto&& task : tasks_){
-		if (!task->isComplete() && !task->markedForDeletion()){
+		if (!task->is_complete() && !task->marked_for_deletion()){
 			if(index < 10){
 				os << "0";
 			}
@@ -303,7 +279,7 @@ void Tasks::printTasks(std::ostream& os){
 	}
 }
 
-void Tasks::printAllTasks(std::ostream& os){
+void tasks::print_all_Tasks(std::ostream& os){
 	size_t index = 0;
 	for(auto&& task : tasks_){
 		if(index < 10){
@@ -314,27 +290,27 @@ void Tasks::printAllTasks(std::ostream& os){
 	}
 }
 
-void Tasks::print(std::ostream& os) const{
+void tasks::print(std::ostream& os) const{
 	for(auto&& task : tasks_){
-		if(!task->markedForDeletion()){
+		if(!task->marked_for_deletion()){
 			os << (*task) << std::endl;
 		}
 	}
 }
 
-Tasks::~Tasks(){
+tasks::~tasks(){
 	for(auto&& task : tasks_){
 		delete(task);
 	}
 }
 
-void Tasks::sort(){
-	std::sort(tasks_.begin(), tasks_.end(), predTask());
+void tasks::sort(){
+	std::sort(tasks_.begin(), tasks_.end(), pred_task());
 }
 
-Task& Tasks::at(size_t position){
+task& tasks::at(size_t position){
 	if(position < tasks_.size()){
-		ChangeTask CT = ChangeTask(tasks_[position]);
+		change_task CT = change_task(tasks_[position]);
 		undo_.push(CT);
 		return *(tasks_[position]);
 	}
@@ -343,70 +319,69 @@ Task& Tasks::at(size_t position){
 	}
 }
 
-Task& Tasks::addEmpty(){
-	Task* temp = new Task();
-	temp->text() = "Newly created task";
-	Date date;
-	date.currentDate();
-	temp->setCreationDate(date);
+task& tasks::add_empty(){
+	task* temp = new task();
+	temp->set_text() = "Newly created task";
+	date date;
+	date.current_date();
+	temp->set_creation_date(date);
 	tasks_.push_back(temp);
 	return *(tasks_[tasks_.size() - 1]);
 }
 
-void Tasks::undo(bool print){
+void tasks::undo(bool print){
 	if(undo_.size() > 0){
 		if (print){
-			std::cout << "From: "<< *(undo_.top().task()) << std::endl;
+			std::cout << "From: "<< *(undo_.top().get_task()) << std::endl;
 		}
-		ChangeTask CT = ChangeTask(undo_.top().task());
+		change_task CT = change_task(undo_.top().get_task());
 		redo_.push(CT);
 		undo_.top().undo();
 		undo_.pop();
 		if (print){
-			std::cout << "To: "<< *(redo_.top().task()) << std::endl;
+			std::cout << "To: "<< *(redo_.top().get_task()) << std::endl;
 		}
 	}
 }
 
-void Tasks::redo(bool print){
+void tasks::redo(bool print){
 	if(redo_.size() > 0){
 		if (print){
-			std::cout << "From: "<< *(redo_.top().task()) << std::endl;
+			std::cout << "From: "<< *(redo_.top().get_task()) << std::endl;
 		}
-		ChangeTask CT = ChangeTask(redo_.top().task());
+		change_task CT = change_task(redo_.top().get_task());
 		undo_.push(CT);
 		redo_.top().undo();
 		redo_.pop();
 		if (print){
-			std::cout << "To: "<< *(undo_.top().task()) << std::endl;
+			std::cout << "To: "<< *(undo_.top().get_task()) << std::endl;
 		}
 	}
 }
 
-ChangeTask::ChangeTask(Task* task){
-	task_ = task;
-	markedForDeletion_ = task->markedForDeletion();
-	text_ = task->text();
-	priority_ = task->getPriority();
-	completion_ = task->isComplete();
-	completion_date_ = task->getCompletionDate();
-	creation_date_ = task->getCreationDate();
-	project_tag_ = task->project();
-	context_tag_ = task->context();
+change_task::change_task(task* t) : task_(t){
+	marked_for_deletion_ = t->marked_for_deletion();
+	text_ = t->get_text();
+	priority_ = t->get_priority();
+	completion_ = t->is_complete();
+	completion_date_ = t->get_completion_date();
+	creation_date_ = t->get_creation_date();
+	project_tag_ = t->get_project();
+	context_tag_ = t->get_context();
 }
 
-void ChangeTask::undo(){
-	task_->setDeletion(markedForDeletion_);
-	task_->text() = text_;
-	task_->setPriority(priority_ == '0' ? -1 : 'A' + priority_);
-	task_->setCompletion(completion_);
-	task_->setCompletionDate(completion_date_ );
-	task_->setCreationDate(creation_date_);
-	task_->project() = project_tag_;
-	task_->context() = context_tag_;
+void change_task::undo(){
+	task_->set_deletion(marked_for_deletion_);
+	task_->set_text() = text_;
+	task_->set_priority(priority_ == '0' ? -1 : 'A' + priority_);
+	task_->set_completion(completion_);
+	task_->set_completion_date(completion_date_ );
+	task_->set_creation_date(creation_date_);
+	task_->set_project() = project_tag_;
+	task_->set_context() = context_tag_;
 }
 
-void Task::setPriority(char pr){
+void task::set_priority(char pr){
 	if (pr == '0'){
 		priority_ = -1;
 	}
@@ -415,7 +390,7 @@ void Task::setPriority(char pr){
 	}
 }
 
-Task& Tasks::operator [](size_t index){
+task& tasks::operator [](size_t index){
 	if(index <= tasks_.size()){
 		return *tasks_[index];
 	}
@@ -424,37 +399,37 @@ Task& Tasks::operator [](size_t index){
     }
 }
 
-Tasks::iterator Tasks::begin(){
-		return Tasks::iterator(this, 0);
-}
-		
-Tasks::iterator Tasks::end(){
-		return Tasks::iterator(this, tasks_.size());
+tasks::iterator tasks::begin(){
+		return tasks::iterator(this, 0);
 }
 
-Tasks::iterator::iterator(Tasks* tasks, std::size_t position){
+tasks::iterator tasks::end(){
+		return tasks::iterator(this, tasks_.size());
+}
+
+tasks::iterator::iterator(tasks* tasks, std::size_t position){
 		tasks_ = tasks;
 		position_ = position;
 }
 
-Task& Tasks::iterator::operator*() const{
+task& tasks::iterator::operator*() const{
 		return (*tasks_)[position_];
 }
-bool Tasks::iterator::operator!=(const Tasks::iterator& other) const{
+bool tasks::iterator::operator!=(const tasks::iterator& other) const{
 		return position_ != other.position_;
 }
-Tasks::iterator& Tasks::iterator::operator++(){
+tasks::iterator& tasks::iterator::operator++(){
 		if(position_ != tasks_->size()){
 			position_++;
 		}
 		return *this;
 }
 
-void Tasks::clear(){
+void tasks::clear(){
 	for (auto&& task : tasks_){
 		delete task;
 	}
-	tasks_ = std::vector<Task*>();
+	tasks_ = std::vector<task*>();
 	while (!undo_.empty()){
 		undo_.pop();
 	}
@@ -463,7 +438,7 @@ void Tasks::clear(){
 	}
 }
 
-bool Task::match(const std::string& match){
+bool task::match(const std::string& match){
 	if (match.length() > 1 && match[0] == '!'){
 		return match[1] == ('A' + priority_);
 	}
@@ -474,15 +449,15 @@ bool Task::match(const std::string& match){
 		return (project_tag_.find(match.substr(1,match.length()-1)) != std::string::npos);
 	}
 	else if (match.length() > 0){
-		bool context = (context_tag_.find(match) != std::string::npos);
-		bool project = (project_tag_.find(match) != std::string::npos);
-		bool text = (text_.find(match) != std::string::npos);
-		return (context || project || text);
+		bool set_context = (context_tag_.find(match) != std::string::npos);
+		bool set_project = (project_tag_.find(match) != std::string::npos);
+		bool set_text = (text_.find(match) != std::string::npos);
+		return (set_context || set_project || set_text);
 	}
 	return true;
 }
 
-bool Task::isEmpty(){
+bool task::is_empty(){
 	if(text_ == ""){
 		return true;
 	}

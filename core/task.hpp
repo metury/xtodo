@@ -1,4 +1,4 @@
-/// @file task.hpp Headder file for classes Task, Tasks and everything related to them.
+/// @file task.hpp Header file for classes Task, Tasks and everything related to them.
 #ifndef task_hpp_
 #define task_hpp_
 
@@ -16,208 +16,143 @@
 /// @param start First index of string from vector that will be used.
 /// @param end First index of string that won't be used.
 /// @param bind New constructed string.
-void bindStrings(const std::vector<std::string>& parts, size_t start, size_t end,std::string& bind);
+void bind_strings(const std::vector<std::string>& parts, size_t start, size_t end, std::string& bind);
 
 /// Split spring based on given splitter.
 /// @param line Which line is going to be split.
 /// @param splitter By which character I am going to split.
 /// @param parts Where to put all the parts.
-void splitString(const std::string& line, const char splitter, std::vector<std::string>& parts);
+void split_string(const std::string& line, const char splitter, std::vector<std::string>& parts);
 
-/// Struct for holding data about given date.
-struct Date{ 
-	public:
-	
+/// Holding data about a single date.
+struct date{
 		/// Default constructor.
 		/// @param y Year.
 		/// @param m Month.
 		/// @param d Day.
-		Date(int y = 0, int m = 0, int d = 0);
-		
+		date(int y = 0, int m = 0, int d = 0);
 		/// Make this date current.
-		void currentDate();
-        
+		void current_date();
         /// Whether the date is undefined (all values are equal to 0).
         /// @return True if it is undefined.
-        bool isEmpty() const;
-		
+        bool is_empty() const;
 		/// Number of day.
 		int day;
-		
 		/// Number of month.
 		int month;
-		
 		/// Number of year.
 		int year;
 };
 
 /// To use default << operator to print date.
 /// @param os Which stream to use.
-/// @param date Which date wil be putted to the stream.
+/// @param date Which date will be putted to the stream.
 /// @return Reference to the stream.
-std::ostream& operator<<(std::ostream& os, const Date& date);
+std::ostream& operator<<(std::ostream& os, const date& date);
 
 /// To compare dates between each other.
 /// @param date1 First date.
 /// @param date2 Second date.
 /// @return If the first was earlier.
-bool operator<(const Date& date1, const Date& date2);
+bool operator<(const date& date1, const date& date2);
+
+/// If the string represents a day.
+/// @param text Written day.
+/// @return If it is indeed a date.
+bool is_date(const std::string& text);
 
 /// Convert date from string in format y-m-d.
 /// @param writtenDate String with this format.
 /// @return Newly constructed Date.
-Date convertDate(const std::string& writtenDate);
+date convert_date(const std::string& writtenDate);
 
 /// Class for holding all properties of task.
-class Task{
+class task{
 	public:
-	
 		/// Default constructor.
 		/// @param done If the task was marked as done or not.
 		/// @param priority If the task has any given priority.
-		Task(bool done = false, char priority = '0');
-		
+		task(bool done = false, char priority = '0');
 		/// Get reference to the text.
 		/// @return Reference to the text.
-		inline std::string& text(){
-			return text_;
-		}
-		
+		inline std::string& set_text(){return text_;}
 		/// Getter for constant reference to the text.
-		/// @return Const reference to the text.
-		inline const std::string& getText() const{
-			return text_;
-		}
-		
+		/// @return Constant reference to the text.
+		inline const std::string& get_text() const{return text_;}
 		/// Get the reference to the project tag.
 		/// @return Reference to the project tag.
-		inline std::string& project(){
-			return project_tag_;
-		}
-		
+		inline std::string& set_project(){return project_tag_;}
 		/// Getter for constant reference to the project tag.
 		/// @return Const reference to the project tag.
-		inline const std::string& getProject() const{
-			return project_tag_;
-		}
-		
+		inline const std::string& get_project() const{return project_tag_;}
 		/// Get the reference to the context tag.
 		/// @return Reference to the context tag.
-		inline std::string& context(){
-			return context_tag_;
-		}
-		
+		inline std::string& set_context(){return context_tag_;}
 		/// Getter for constant reference to the context tag.
 		/// @return Const reference to the context tag.
-		inline const std::string& getContext() const{
-			return context_tag_;
-		}
-		
+		inline const std::string& get_context() const{return context_tag_;}
 		/// Set the deletion for the task.
 		/// @param del If the task is to be deleted or not.
-		inline void setDeletion(bool del){
-			markedForDeletion_ = del;
-		}
-		
+		inline void set_deletion(bool del){marked_for_deletion_ = del;}
 		/// Getter for deletion flag.
 		/// @return If the task is set to be deleted.
-		inline bool markedForDeletion() const{
-			return markedForDeletion_;
-		}
-		
+		inline bool marked_for_deletion() const{return marked_for_deletion_;}
 		/// Switch deletion to the negation of the current state.
-		inline void switchDeletion(){
-			markedForDeletion_ = !markedForDeletion_;
-		}
-		
+		inline void switch_deletion(){marked_for_deletion_ = !marked_for_deletion_;}
 		/// Set the completion of the task.
 		/// @param completion Whether the task is going to be completed or not.
-		inline void setCompletion(bool completion){
-			completion_ = completion;
-		}
-		
+		inline void set_completion(bool completion){completion_ = completion;}
 		/// Getter for completion flag.
 		/// @return If the task is complete or not.
-		inline bool isComplete() const{
-			return completion_;
-		}
-		
+		inline bool is_complete() const{return completion_;}
 		/// Switch completion to its negation of the current state.
-		void switchCompletion();
-		
+		void switch_completion();
 		/// Set completion date with date in string format.
 		/// @param date The string with writte date.
-		void setCompletionDate(std::string date);
-		
+		void set_completion_date(std::string& date);
 		/// Set comletion date with already existing date.
 		/// @param date Given date.
-		inline void setCompletionDate(Date date){
-			completion_date_ = date;
-		}
-		
+		inline void set_completion_date(date date){completion_date_ = date;}
 		/// Getter for constant reference to the completion date.
 		/// @return Const reference to the completion date.
-		inline const Date& getCompletionDate() const{
-			return completion_date_;
-		}
-		
+		inline const date& get_completion_date() const{return completion_date_;}
 		/// Set creation date with date in string format.
 		/// @param date The string with writte date.
-		void setCreationDate(std::string date);
-		
+		void set_creation_date(std::string& date);
 		/// Set comletion date with already existing date.
 		/// @param date Given date.
-		inline void setCreationDate(Date date){
-			creation_date_ = date;
-		}	
-
+		inline void set_creation_date(date date){creation_date_ = date;}
 		/// Getter for constant reference to the completion date.
 		/// @return Const reference to the completion date.
-		inline const Date& getCreationDate() const{
-			return creation_date_;
-		}
-		
+		inline const date& get_creation_date() const{return creation_date_;}
 		/// Getter for priority in size_t format.
 		/// @return Priority.
-		inline size_t getPriority() const{
-			return priority_;
-		}
-
+		inline int get_priority() const{return priority_;}
 		/// Setter for priority with given character.
 		/// @param pr Priority in char format (A-Z).
-		void setPriority(char pr);
-		
+		void set_priority(char pr);
 		/// If the task is matching with given string.
 		/// @param match Matching string.
 		/// @return If it matches.
 		bool match(const std::string& match);
-		
 		/// If the task is empty.
 		/// @return True if it is empty.
-		bool isEmpty();
+		bool is_empty();
 	private:
-		
 		/// If the task is set to be deleted (not saved).
-		bool markedForDeletion_ = false;
-		
+		bool marked_for_deletion_ = false;
 		/// What is the content of the task.
 		std::string text_;
-		
-		/// What priority does the task have (from A to Z, but in size_t format).
-		size_t priority_;
-		
+		/// What priority does the task have (from A to Z).
+		int priority_;
 		/// If the task is marked as completed or not.
 		bool completion_;
-		
 		/// When the task is set to be done.
-		Date completion_date_;
-		
+		date completion_date_;
 		/// When the task was created.
-		Date creation_date_;
-		
+		date creation_date_;
 		/// What is the project tag.
 		std::string project_tag_;
-		
 		/// What is the context tag.
 		std::string context_tag_;
 };
@@ -226,195 +161,149 @@ class Task{
 /// @param os Reference to the used stream.
 /// @param task Which task will be used.
 /// @return Reference to the stream.
-std::ostream& operator<<(std::ostream& os, const Task& task);
+std::ostream& operator<<(std::ostream& os, const task& task);
 
 /// To compare tasks between eachother.
 /// @param task1 First tasks.
 /// @param task2 Second task.
 /// @return If the first task has less "priority" (deletion - done - priority - completion date - creation date).
-bool operator<(const Task& task1, const Task& task2);
+bool operator<(const task& task1, const task& task2);
 
 
 /// When changing the task make this class to preserve the old task for undo and redo purposes.
-class ChangeTask{
+class change_task{
 	public:
-		
 		/// Default constructor.
 		/// @param task Pointer to the changed task.
-		ChangeTask(Task* task);
-		
+		change_task(task* t);
 		/// Undo all changes made to the task.
 		void undo();
-		
 		/// Getter for the pointer to the changed task.
 		/// @return Pointer to the task.
-		inline Task* task(){
-			return task_;
-		}
+		inline task* get_task(){return task_;}
 	private:
-		
 		/// Pointer to the changed task.
-		Task* task_;
-		
+		task* task_;
 		/// If it was marked for deletion.
-		bool markedForDeletion_ = false;
-		
+		bool marked_for_deletion_ = false;
 		/// What was the old content.
 		std::string text_;
-		
 		/// What was its priority.
-		size_t priority_;
-		
+		int priority_;
 		/// If it was set for completion or not.
 		bool completion_;
-		
 		/// What was its completion date.
-		Date completion_date_;
-		
+		date completion_date_;
 		/// What was its creation date.
-		Date creation_date_;
-		
+		date creation_date_;
 		/// What was its project tag.
 		std::string project_tag_;
-		
 		/// What was its context tag.
 		std::string context_tag_;
 };
 
 /// Functor for pointer to task to sort vector with task pointer.
-struct predTask{
-	
+struct pred_task{
+
 	/// Operator () of the functor.
 	/// @param task1 Pointer to first task.
 	/// @param task2 Pointer to second task.
 	/// @return If the first task has bigger priority.
-	bool operator()(Task* task1, Task* task2) const { 
+	bool operator()(task* task1, task* task2) const {
 		return *task1 < *task2;
 	}
 };
 
 
 /// Class holding all tasks and to work with them.
-class Tasks{
+class tasks{
 	public:
-	
 		/// Adding task in string format.
 		/// @param line Task in string format.
-		void addTask(const std::string& line);
-		
+		void add_task(const std::string& line);
 		/// Print tasks that are not done and not marked for deletion with their index.
 		/// @param os Which stream to use.
-		void printTasks(std::ostream& os = std::cout);
-		
+		void print_tasks(std::ostream& os = std::cout);
 		/// Print all tasks with ther index.
 		/// @param os Which stream to use.
-		void printAllTasks(std::ostream& os = std::cout);
-		
+		void print_all_Tasks(std::ostream& os = std::cout);
 		/// Print all tasks in its base string format.
 		/// @param os Which stream to use.
 		void print(std::ostream& os) const;
-		
 		/// Sort all tasks based on their priority.
 		void sort();
-		
 		/// Getter for reference of the task at the given index, also make copy for undo.
 		/// @param position What is the index of the task.
 		/// @return Reference to the task.
-		Task& at(size_t position);
-		
+		task& at(size_t position);
 		/// Adding new (empty) task.
 		/// @return Reference to the newly constructed task.
-		Task& addEmpty();
-		
+		task& add_empty();
 		/// Undo last change.
 		/// @param print Wheter to print the change to cout or not.
 		void undo(bool print = false);
-		
 		/// Redo last undo.
 		/// @param print Whether to print the change to cout or not.
 		void redo(bool print = false);
-		
 		/// How many tasks it has.
 		/// @return The size.
-		inline size_t size() const{
-			return tasks_.size();
-		}
-		
+		inline size_t size() const{return tasks_.size();}
 		/// Get Task on the postion through brackets.
 		/// @param index which position.
 		/// @return Reference to thatt task if it exists.
-		Task& operator[](size_t index);
-		
+		task& operator[](size_t index);
 		/// Class for iterator in Tasks.
 		class iterator;
-		
 		/// Begining iterator.
 		/// @return Newly constructed iterator pointing to the begining.
-		Tasks::iterator begin();
-		
+		tasks::iterator begin();
 		/// Ending iterator.
 		/// @return Newly constructed iterator pointing to the end.
-		Tasks::iterator end();
-		
+		tasks::iterator end();
 		/// Default destructor for destructing all tasks.
-		~Tasks();
-		
+		~tasks();
 		/// Destroy all tasks and change tasks.
 		void clear();
 	private:
-		
 		/// Where all task are stored. As pointers to easily make new pointers to them.
-		std::vector<Task*> tasks_;
-		
+		std::vector<task*> tasks_;
 		/// Stack of last changes.
-		std::stack<ChangeTask> undo_;
-		
+		std::stack<change_task> undo_;
 		/// Stack of last undos.
-		std::stack<ChangeTask> redo_;
+		std::stack<change_task> redo_;
 };
 
 /// Class for iterator in Tasks.
-class Tasks::iterator{
-	friend class Tasks;
+class tasks::iterator{
+	friend class tasks;
 	public:
-	
 		/// What category is this iterator.
 		using iterator_category = std::forward_iterator_tag;
-		
 		/// How to solve difference of these iterators.
 		using difference_type = std::ptrdiff_t;
-		
 		/// What is the type it is iterating.
-		using value_type = Task;
-		
+		using value_type = task;
 		/// What is the pointer.
-		using pointer = Task*;
-		
+		using pointer = task*;
 		/// What is the reference.
-		using reference = Task&;
-		
+		using reference = task&;
 		/// Basic constructor.
 		/// @param tasks Which tasks it is bounded to.
 		/// @param position At which position it is looking.
-		iterator(Tasks* tasks, std::size_t position);
-		
+		iterator(tasks* tasks, std::size_t position);
 		/// To use * operator with the iterator.
 		/// @return reference to that Task.
-		Task& operator*() const;
-		
+		task& operator*() const;
 		/// How to compare two iterators.
 		/// @param other Second iterator.
 		/// @return If they are different.
 		bool operator!=(const iterator& other) const;
-		
 		/// Default operator for incrementation.
 		/// @return Reference to changed iterator.
 		iterator& operator++();
 	private:
-	
 		/// Pointer to parent Tasks.
-		Tasks* tasks_;
-		
+		tasks* tasks_;
 		/// At which position is the iterator looking.
 		size_t position_;
 };

@@ -34,7 +34,7 @@ void printHelpArgs(){
 int main(int argc, char * * argv){
 	try{
 		// Initialization of program with its settings.
-		std::vector<std::string> args (argv + 1, argc+argv); 
+		std::vector<std::string> args (argv + 1, argc+argv);
 		ArgumentReader ar;
 		Settings settings;
 		std::vector<std::string> files;
@@ -46,19 +46,19 @@ int main(int argc, char * * argv){
 				return 0;
 			}
 		}
-		
+
 		try{
 			ar.readConfig(settings, files, ofile);
 		}
 		catch(Exception& e){
 			std::cout << e.what() << std::endl;
 		}
-		
+
 		// Load tasks.
-		Tasks tasks;
+		tasks tasks;
 		Reader reader;
 		reader.readFiles(files, tasks);
-		
+
 		// Run.
 		if (settings.client == CLI){
 			terminalRun(tasks, reader, ofile);

@@ -1,6 +1,5 @@
 /// @file reader.cpp Cpp file for implementation of reader.hpp.
 #include "reader.hpp"
-#include "task.hpp"
 
 file_parser::file_parser(){
 	#ifdef _WIN32
@@ -20,63 +19,60 @@ file_parser::file_parser(){
     }
 	config_ = config_ / "config";
 	if(!std::filesystem::exists(config_)){
-		std::ofstream ostream;
-		ostream.open(config_);
-		if(!ostream.is_open()){
-			throw FileProcessingException(config_, OUTPUT);
-		}
-		ostream << "";
+		save_config();
 	}
 }
 
 void file_parser::read_config(){
 	if (!use_config_){
-		if(ofile == "" && files.size() == 1)
-			ofile = files[0];
-		else if(ofile == "")
+		if(ofile_ == "" && files_.size() == 1)
+			ofile_ = files_[0];
+		else if(ofile_ == "")
 			throw NonGivenSetting(OFILE);
-		if (files.size() == 0)
+		if (files_.size() == 0)
 			throw NonGivenSetting(IFILE);
 		if(save_config_)
-			saveConfig(settings,files,ofile);
+			save_config();
 		return;
 	}
-	std::ifstream stream;
-	stream.open(config);
-	if(!stream.is_open())
-		throw FileProcessingException(config, INPUT);
-	std::string line;
-	while(getline(stream,line)){
-		if(line[0] == '#') continue;
-		if(line.length() >= 5 && line.substr(0,5) == "FILE=")
-			files.push_back(line.substr(5,line.length()));
-		else if(line.length() >= 6 && line.substr(0,6) == "OFILE=" && ofile == "")
-			if (ofile == "") ofile = line.substr(6,line.length());
+	try{
+        std::ifstream stream;
+        stream.open(config_);
+        std::string line;
+        while(getline(stream, line)){
+            if(line[0] == '#') continue;
+            if(line.length() >= 5 && line.substr(0,5) == "FILE=")
+                files_.push_back(line.substr(5,line.length()));
+            else if(line.length() >= 6 && line.substr(0,6) == "OFILE=" && ofile_ == "")
+                if (ofile_ == "") ofile_ = line.substr(6, line.length());
+        }
+	} catch(std::exception& e){
+        std::cout << e.what() << std::endl;
 	}
-	stream.close();
-	if(ofile == "" && files.size() == 1)
-		ofile = files[0];
-	else if (ofile == "")
+	if(ofile_ == "" && files_.size() == 1)
+		ofile_ = files_[0];
+	else if (ofile_ == "")
 		throw NonGivenSetting(OFILE);
 	if(save_config_){
 		save_config();
 	}
+
 }
 
-void ArgumentReader::save_config(){
-	std::ofstream ostream;
-	ostream.open(config);
-	if(!ostream.is_open()){
-		throw FileProcessingException(config, OUTPUT);
-	}
-	ostream << "# Saved configuration from last time." << std::endl;
-	ostream << "# Used files." << std::endl;
-	for(auto&& file : files_){
-		ostream << "FILE=" << file << std::endl;
-	}
-	ostream << "# Output file." << std::endl;
-	ostream << "OFILE=" << ofile_ << std::endl;
-	ostream.close();
+void file_parser::save_config(){
+    try{
+        std::ofstream ostream;
+        ostream.open(config_);
+        ostream << "# Saved configuration from last time." << std::endl;
+        ostream << "# Used files." << std::endl;
+        for(auto&& file : files_){
+            ostream << "FILE=" << file << std::endl;
+        }
+        ostream << "# Output file." << std::endl;
+        ostream << "OFILE=" << ofile_ << std::endl;
+    } catch(std::exception& e){
+        std::cout << e.what() << std::endl;
+    }
 }
 
 bool file_parser::parse_arguments(const std::vector<std::string>& args){
@@ -111,51 +107,52 @@ bool file_parser::parse_arguments(const std::vector<std::string>& args){
 	return true;
 }
 
-void file_parser::read_files(Tasks& tasks){
+void file_parser::read_files(tasks& tasks){
 	std::ifstream stream;
 	for(auto&& file : files_){
-		stream.open(file);
-		if(!stream.is_open()){
-			throw FileProcessingException(file, INPUT);
-		}
-		std::string line;
-		while(getline(stream,line)){
-			tasks.addTask(line);
-		}
-		stream.close();
+        try{
+            stream.open(file);
+            std::string line;
+            while(getline(stream,line)){
+                tasks.add_task(line);
+            }
+            stream.close();
+        } catch(std::exception& e){
+            std::cout << e.what() << std::endl;
+        }
 	}
 }
 
-void file_parser::readFile(const std::string& file, Tasks& tasks){
-	std::ifstream stream;
-	stream.open(file);
-	if(!stream.is_open()){
-		throw FileProcessingException(file, INPUT);
-	}
-	std::string line;
-	while(getline(stream,line)){
-		tasks.addTask(line);
-	}
-	stream.close();
+void file_parser::readFile(const std::string& file, tasks& tasks){
+    try{
+        std::ifstream stream;
+        stream.open(file);
+        std::string line;
+        while(getline(stream,line)){
+            tasks.add_task(line);
+        }
+    } catch(std::exception& e){
+        std::cout << e.what() << std::endl;
+    }
 }
 
-void file_parser::save_file(const Tasks& tasks){
-	std::ofstream stream;
-	stream.open(ofile);
-	if(!stream.is_open()){
-		throw FileProcessingException(ofile, OUTPUT);
-	}
-	tasks.print(stream);
-	stream.close();
+void file_parser::save_file(const tasks& tasks){
+	try{
+        std::ofstream stream;
+        stream.open(ofile_);
+        tasks.print(stream);
+    } catch(std::exception& e){
+        std::cout << e.what() << std::endl;
+    }
 }
 
-void ArgumentReader::saveConfigGUI(std::string& file){
-	std::ofstream ostream;
-	ostream.open(config);
-	if(!ostream.is_open()){
-		throw FileProcessingException(config, OUTPUT);
-	}
-	ostream << "# File." << std::endl;
-	ostream << "FILE=" << file << std::endl;
-	ostream.close();
+void file_parser::saveConfigGUI(std::string& file){
+    try{
+        std::ofstream ostream;
+        ostream.open(config_);
+        ostream << "# File." << std::endl;
+        ostream << "FILE=" << file << std::endl;
+	} catch(std::exception& e){
+        std::cout << e.what() << std::endl;
+    }
 }

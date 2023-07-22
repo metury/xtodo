@@ -4,7 +4,7 @@
 #include "ui_editwindow.h"
 #include "ui_findwindow.h"
 
-MainWindow::MainWindow( Tasks* tasks, Reader* reader, std::string* ofile, QWidget *parent)
+MainWindow::MainWindow( tasks* tasks, Reader* reader, std::string* ofile, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
@@ -12,7 +12,7 @@ MainWindow::MainWindow( Tasks* tasks, Reader* reader, std::string* ofile, QWidge
     reader_ = reader;
     ofile_ = ofile;
     ui->setupUi(this);
-    
+
     // Connect all buttons / key shortcuts to its function.
     connect(ui->actionEdit, SIGNAL (triggered()), this, SLOT(edit()));
     connect(ui->actionDone, SIGNAL (triggered()), this, SLOT(done()));
@@ -37,20 +37,20 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::changeColor(Task* task, size_t index){
-    if(task->text() == "" || (!task->getCompletionDate().isEmpty() &&  task->getCreationDate().isEmpty())){
+void MainWindow::changeColor(task* task, size_t index){
+    if(task->set_text() == "" || (!task->get_completion_date().is_empty() &&  task->get_creation_date().is_empty())){
 		ui->tasks->topLevelItem(index)->setBackground(0, QColor(QColor(0x972323)));
 		ui->tasks->topLevelItem(index)->setForeground(0, QBrush(QColor(0xFFFFFF)));
 	}
-	else if(task->isComplete()){
+	else if(task->is_complete()){
 		ui->tasks->topLevelItem(index)->setBackground(0, QColor(QColor(0xFFFFFF)));
 		ui->tasks->topLevelItem(index)->setForeground(0, QBrush(QColor(0x989898)));
 	}
-	else if(task->getPriority() == -1){
+	else if(task->get_priority() == -1){
         return;
     }
 	else{
-		ui->tasks->topLevelItem(index)->setForeground(0, QBrush(colors[task->getPriority()]));
+		ui->tasks->topLevelItem(index)->setForeground(0, QBrush(colors[task->get_priority()]));
 	}
 }
 
@@ -59,17 +59,17 @@ void MainWindow::refresh(){
     size_t index = 0;
     size_t colorIndex = 0;
     for(auto&& task : *tasks_){
-        if (task.isComplete() && !done_){}
-        else if (task.markedForDeletion() && !deleted_){}
+        if (task.is_complete() && !done_){}
+        else if (task.marked_for_deletion() && !deleted_){}
         else if (task.match(matchingString_)){
             std::stringstream stream;
             stream << task;
             QString qstring = QString::fromStdString(stream.str());
             MyItem* item = new MyItem(index);
-            item->setText(0, QString::fromStdString(std::to_string(task.getPriority())));
-            item->setText(3, QString::fromStdString(task.getText()));
-            item->setText(4, QString::fromStdString(task.getProject()));
-            item->setText(4, QString::fromStdString(task.getContext()));
+            item->setText(0, QString::fromStdString(std::to_string(task.get_priority())));
+            item->setText(3, QString::fromStdString(task.get_text()));
+            item->setText(4, QString::fromStdString(task.get_project()));
+            item->setText(4, QString::fromStdString(task.get_context()));
             ui->tasks->addTopLevelItem(item);
             changeColor(&task,colorIndex);
             ++colorIndex;
@@ -134,7 +134,7 @@ void MainWindow::edit(){
 }
 
 void MainWindow::add(){
-    editwindow* ew = new editwindow(&tasks_->addEmpty(), this);
+    editwindow* ew = new editwindow(&tasks_->add_empty(), this);
     ew->show();
 }
 
@@ -263,7 +263,7 @@ void MainWindow::reload(){
 	refresh();
 }
 
-editwindow::editwindow(Task* task, MainWindow* mainParent, bool emptyText, bool emptyDate, QWidget *parent) :
+editwindow::editwindow(task* task, MainWindow* mainParent, bool emptyText, bool emptyDate, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::editwindow)
 {
@@ -271,7 +271,7 @@ editwindow::editwindow(Task* task, MainWindow* mainParent, bool emptyText, bool 
     connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(mysave()));
     task_ = task;
     parent_ = mainParent;
-    
+
     emptyDate_ = emptyDate;
     emptyText_ = emptyText;
     write();
@@ -325,14 +325,14 @@ void editwindow::mysave(){
     }
     line = (ui->complDateEdit->text()).toStdString();
     if(line == ""){
-        task_->setCompletionDate(Date());
+        task_->setCompletionDate(date());
     }
     else if(line.length() >= 1){
         task_->setCompletionDate(line);
     }
     line = (ui->createDateEdit->text()).toStdString();
     if(line == ""){
-        task_->setCreationDate(Date());
+        task_->setCreationDate(date());
     }
     else if(line.length() >= 1){
         task_->setCreationDate(line);

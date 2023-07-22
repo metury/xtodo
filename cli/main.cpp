@@ -3,12 +3,11 @@
 #include <string>
 #include <vector>
 #include "../core/reader.hpp"
-#include "../core/task.hpp"
 #include "terminal.hpp"
 #include "../core/exception.hpp"
 
 /// Print all possible arguments when calling program.
-void print_help(){
+void print_help_args(){
 	std::cout << "xtodo [files] [optional arguments]" << std::endl;
 	std::cout << "  -s" << std::endl;
 	std::cout << "    To save current settings to config file" << std::endl;
@@ -31,7 +30,7 @@ int main(int argc, char * * argv){
 		file_parser parser;
 		bool run = parser.parse_arguments(args);
 		if(!run){
-			print_help();
+			print_help_args();
 			return 0;
 		}
 		try{
@@ -40,9 +39,9 @@ int main(int argc, char * * argv){
 		catch(Exception& e){
 			std::cout << e.what() << std::endl;
 		}
-		
+
 		// Load tasks.
-		Tasks tasks;
+		tasks tasks;
 		parser.read_files(tasks);
 		terminal_run(tasks, parser);
 		return 0;
