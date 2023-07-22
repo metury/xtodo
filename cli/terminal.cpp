@@ -85,7 +85,7 @@ void edit(Task& task, std::string& text){
 	std::cout << text << task << std::endl;
 }
 
-void printHelp(){
+void print_help(){
 	std::cout << "What can be called in terminal application:" << std::endl;
 	std::cout << "show .. show tasks taht are not done and not marked for deletion" << std::endl;
 	std::cout << "showall .. show all tasks" << std::endl;
@@ -106,7 +106,7 @@ void printHelp(){
 	std::cout << "This will prompt a new dialogue and everytime if you press only enter it will not change, or if you paste / it will be read as replace for nothing." << std::endl;
 }
 
-void terminalRun(Tasks& tasks, Reader& reader, const std::string& ofile){
+void terminal_run(Tasks& tasks, file_parser& reader){
 	std::string line;
 	std::cout << "x++: ";
 	while (getline(std::cin, line)){
@@ -123,10 +123,10 @@ void terminalRun(Tasks& tasks, Reader& reader, const std::string& ofile){
 			tasks.printAllTasks();
 		}
 		else if(line == "save"){
-			reader.saveFile(tasks,ofile);
+			reader.save_file(tasks);
 		}
 		else if(line == "bye" || line == "exit"){
-			reader.saveFile(tasks, ofile);
+			reader.save_file(tasks);
 			return;
 		}
 		else if (line == "quit"){
@@ -142,7 +142,7 @@ void terminalRun(Tasks& tasks, Reader& reader, const std::string& ofile){
 			tasks.sort();
 		}
 		else if (line == "help"){
-			printHelp();
+			print_help();
 		}
 		else if (parts[0] == "add"){
 			if(parts.size() > 1){
@@ -224,9 +224,9 @@ void terminalRun(Tasks& tasks, Reader& reader, const std::string& ofile){
 			}
 		}
 		else if(parts.size() == 1 && parts[0] == "reload"){
-			reader.saveFile(tasks, ofile);
+			reader.save_file(tasks);
 			tasks.clear();
-			reader.readFile(ofile, tasks);
+			reader.read_files(tasks);
 		}
 		std::cout << "x++: ";
 	} 

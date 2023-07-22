@@ -2,9 +2,9 @@
 #ifndef terminal_hpp_
 #define terminal_hpp_
 
-#include "task.hpp"
-#include "reader.hpp"
-#include "exception.hpp"
+#include "../core/task.hpp"
+#include "../core/reader.hpp"
+#include "../core/exception.hpp"
 #include <iostream>
 
 /// When edditing print one part of a dialog.
@@ -20,8 +20,7 @@ void printEditDate(const std::string& text, const Date& date);
 /// Main loop for running terminal application.
 /// @param tasks What are the tasks.
 /// @param reader Which reader is to be used. For saving files.
-/// @param ofile Where will the tasks be saved in an output file.
-void terminalRun(Tasks& tasks, Reader& reader, const std::string& ofile);
+void terminal_run(Tasks& tasks, file_parser& parser);
 
 /// Edit or add task dialog.
 /// @param task What is the task.
@@ -29,6 +28,6 @@ void terminalRun(Tasks& tasks, Reader& reader, const std::string& ofile);
 void edit(Task& task, std::string& text);
 
 /// print all possible calls in terminal app.
-void printHelp();
+void print_help();
 
 #endif

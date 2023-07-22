@@ -1,4 +1,0 @@
-Completely change to QTreeWidget
-Split two application to console and gui
-Console app register terms and recall them by pressing up and down arrows
-Change config to global
