@@ -30,20 +30,22 @@ MainWindow::~MainWindow(){
 }
 
 void MainWindow::changeColor(task* task, size_t index){
-    if(task->set_text() == "" || (!task->get_completion_date().is_empty() &&  task->get_creation_date().is_empty())){
-		ui->tasks->topLevelItem(index)->setBackground(0, QColor(QColor(0x972323)));
-		ui->tasks->topLevelItem(index)->setForeground(0, QBrush(QColor(0xFFFFFF)));
-	}
-	else if(task->is_complete()){
-		ui->tasks->topLevelItem(index)->setBackground(0, QColor(QColor(0xFFFFFF)));
-		ui->tasks->topLevelItem(index)->setForeground(0, QBrush(QColor(0x888888)));
-	}
-	else if(task->get_priority() == -1){
-        return;
+    for(int i = 0; i < ui->tasks->columnCount(); ++i){
+        if(task->set_text() == "" || (!task->get_completion_date().is_empty() &&  task->get_creation_date().is_empty())){
+            ui->tasks->topLevelItem(index)->setBackground(i, QColor(QColor(0x972323)));
+            ui->tasks->topLevelItem(index)->setForeground(i, QBrush(QColor(0xFFFFFF)));
+        }
+        else if(task->is_complete()){
+            ui->tasks->topLevelItem(index)->setBackground(i, QColor(QColor(0xFFFFFF)));
+            ui->tasks->topLevelItem(index)->setForeground(i, QBrush(QColor(0x888888)));
+        }
+        else if(task->get_priority() == -1){
+            return;
+        }
+        else{
+            ui->tasks->topLevelItem(index)->setForeground(i, QBrush(colors[task->get_priority()]));
+        }
     }
-	else{
-		ui->tasks->topLevelItem(index)->setForeground(0, QBrush(colors[task->get_priority()]));
-	}
 }
 
 void MainWindow::refresh(){
@@ -64,6 +66,8 @@ void MainWindow::refresh(){
         }
         ++index;
     }
+    for(int i = 0; i < ui->tasks->columnCount() - 1; ++i)
+        ui->tasks->resizeColumnToContents(i);
 }
 
 void MainWindow::refreshMatch(const std::string& match){
@@ -315,10 +319,15 @@ void editwindow::showError(){
 }
 
 task_item::task_item(task* t) : task_(t){
-    setText(0, QString::fromStdString(std::to_string(task_->get_priority())));
-    setText(1, QString::fromStdString(task_->get_text()));
-    setText(2, QString::fromStdString(task_->get_creation_date().str()));
-    setText(3, QString::fromStdString(task_->get_completion_date().str()));
+    if(task_->get_priority() != -1){
+        char c = 'A' + task_->get_priority();
+        QString text;
+        text += c;
+        setText(0, text);
+    }
+    setText(1, QString::fromStdString(task_->get_creation_date().str()));
+    setText(2, QString::fromStdString(task_->get_completion_date().str()));
+    setText(3, QString::fromStdString(task_->get_text()));
     setText(4, QString::fromStdString(task_->get_project()));
     setText(5, QString::fromStdString(task_->get_context()));
 }

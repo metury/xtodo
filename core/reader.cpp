@@ -9,7 +9,7 @@ file_parser::file_parser(){
         if(xdgConfigHome != nullptr){
             config_ = std::filesystem::path(getenv("XDG_CONFIG_HOME"));
         }
-        if (configPath_.empty()) {
+        if (config_.empty()) {
             config_ = std::filesystem::path(getenv("HOME")) / ".config";
         }
     #endif
