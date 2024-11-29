@@ -1,2 +1,4 @@
 build/
 xtodo/icon.ico
+target/
+*.lock
